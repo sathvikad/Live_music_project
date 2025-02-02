@@ -1,18 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
 
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="streaming.live_music.HelloController">
     <top>
-        <Label text="Live Music Venue Matchmaker" style="-fx-font-size: 24px;" BorderPane.alignment="center"/>
+        <Label text="Live Music Venue Matchmaker" style="-fx-font-size: 28px; -fx-font-weight: bold;"
+               BorderPane.alignment="center"/>
     </top>
     <center>
-        <VBox spacing="15" alignment="CENTER">
-            <Button text="View Job Requests" onAction="#handleJobRequests"/>
-            <Button text="View Venues" onAction="#handleVenues"/>
-            <Button text="Auto-Match Venues" onAction="#handleAutoMatch"/>
-            <Button text="Order Summary" onAction="#handleOrderSummary"/>
+        <VBox spacing="20" alignment="CENTER">
+            <Button text="View Job Requests" onAction="#handleJobRequests">
+                <graphic>
+                    <ImageView fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true"
+                               image="@../images/job.png"/>
+                </graphic>
+            </Button>
+            <Button text="View Venues" onAction="#handleVenues">
+                <graphic>
+                    <ImageView fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true"
+                               image="@../images/venue.png"/>
+                </graphic>
+            </Button>
+            <Button text="Auto-Match Venues" onAction="#handleAutoMatch">
+                <graphic>
+                    <ImageView fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true"
+                               image="@../images/match.png"/>
+                </graphic>
+            </Button>
+            <Button text="Order Summary" onAction="#handleOrderSummary">
+                <graphic>
+                    <ImageView fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true"
+                               image="@../images/order.png"/>
+                </graphic>
+            </Button>
         </VBox>
     </center>
 </BorderPane>

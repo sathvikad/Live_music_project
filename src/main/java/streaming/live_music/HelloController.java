@@ -1,42 +1,50 @@
 package streaming.live_music;
 
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 
 public class HelloController {
 
-    private void switchScene(String fxmlFile) {
+    public void switchScene(String fxmlFile, Stage currentStage) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent root = loader.load();
-            Stage stage = (Stage) root.getScene().getWindow();
-            stage.setScene(new Scene(root));
+            Scene scene = new Scene(root);
+            currentStage.setScene(scene);
+            currentStage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    @FXML
-    private void handleJobRequests() {
-        switchScene("/streaming/live_music/jobRequest.fxml");
+    public void handleJobRequests() {
+        Stage currentStage = getCurrentStage();
+        switchScene("/streaming/live_music/jobRequest.fxml", currentStage);
     }
 
-    @FXML
-    private void handleVenueList() {
-        switchScene("/streaming/live_music/venueList.fxml");
+    public void handleVenueList() {
+        Stage currentStage = getCurrentStage();
+        switchScene("/streaming/live_music/venueList.fxml", currentStage);
     }
 
-    @FXML
-    private void handleAutoMatch() {
-        switchScene("/streaming/live_music/autoMatch.fxml");
+    public void handleAutoMatch() {
+        Stage currentStage = getCurrentStage();
+        switchScene("/streaming/live_music/autoMatch.fxml", currentStage);
     }
 
-    @FXML
-    private void handleOrderSummary() {
-        switchScene("/streaming/live_music/orderSummary.fxml");
+    public void handleOrderSummary() {
+        Stage currentStage = getCurrentStage();
+        switchScene("/streaming/live_music/orderSummary.fxml", currentStage);
+    }
+
+    private Stage getCurrentStage() {
+        return (Stage) Stage.getWindows().stream()
+                .filter(window -> window.isShowing())
+                .findFirst()
+                .orElse(null);
     }
 }

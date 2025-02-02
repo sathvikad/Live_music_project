@@ -1,24 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" spacing="10" alignment="CENTER">
+    <Label text="Job Requests" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
 
-<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="streaming.live_music.JobRequestController">
-    <top>
-        <Label text="Job Requests" style="-fx-font-size: 24px; -fx-font-weight: bold;"
-               BorderPane.alignment="center"/>
-    </top>
-    <center>
-        <TableView fx:id="jobRequestTable" prefHeight="300" prefWidth="400">
-            <columns>
-                <TableColumn fx:id="idColumn" text="Request ID" prefWidth="100"/>
-                <TableColumn fx:id="clientColumn" text="Client" prefWidth="150"/>
-                <TableColumn fx:id="eventTypeColumn" text="Event Type" prefWidth="150"/>
-                <TableColumn fx:id="dateColumn" text="Event Date" prefWidth="150"/>
-            </columns>
-        </TableView>
-    </center>
-    <bottom>
-        <Button text="Back to Dashboard" onAction="#handleBackToDashboard" style="-fx-padding: 10px;"/>
-    </bottom>
-</BorderPane>
+    <TableView fx:id="jobTable" prefWidth="600">
+        <columns>
+            <TableColumn text="Request ID" prefWidth="150" />
+            <TableColumn text="Event Name" prefWidth="250" />
+            <TableColumn text="Client" prefWidth="200" />
+        </columns>
+    </TableView>
+
+    <Button text="Back to Menu" onAction="#handleBack" />
+</VBox>

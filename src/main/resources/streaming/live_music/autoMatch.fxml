@@ -2,20 +2,18 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-    <top>
-        <Label text="Auto-Match Venues" style="-fx-font-size: 18px;" BorderPane.alignment="center"/>
-    </top>
-    <center>
-        <TableView fx:id="matchTable">
-            <columns>
-                <TableColumn fx:id="requestIDColumn" text="Request ID" />
-                <TableColumn fx:id="venueNameColumn" text="Venue Name" />
-                <TableColumn fx:id="matchScoreColumn" text="Match Score" />
-            </columns>
-        </TableView>
-    </center>
-    <bottom>
-        <Button text="Back to Dashboard" onAction="#handleBackToDashboard" />
-    </bottom>
-</BorderPane>
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" spacing="10">
+    <Label text="Auto Match Venues" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+
+    <Button text="Auto Match Now" onAction="#onAutoMatch" prefWidth="200" />
+
+    <TableView fx:id="recommendationTable" prefWidth="600">
+        <columns>
+            <TableColumn text="Venue Name" fx:id="colVenueName" prefWidth="200" />
+            <TableColumn text="Match Score" fx:id="colMatchScore" prefWidth="200" />
+            <TableColumn text="Capacity" fx:id="colCapacity" prefWidth="200" />
+        </columns>
+    </TableView>
+
+    <Button text="Back to Menu" onAction="#handleBack" />
+</VBox>

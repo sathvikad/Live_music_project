@@ -1,37 +1,25 @@
 package streaming.live_music;
 
 public class JobRequest {
-    private String requestId;
     private String eventName;
+    private String eventDate;
     private String client;
 
-    public JobRequest(String requestId, String eventName, String client) {
-        this.requestId = requestId;
+    public JobRequest(String eventName, String eventDate, String client) {
         this.eventName = eventName;
+        this.eventDate = eventDate;
         this.client = client;
-    }
-
-    public String getRequestId() {
-        return requestId;
-    }
-
-    public void setRequestId(String requestId) {
-        this.requestId = requestId;
     }
 
     public String getEventName() {
         return eventName;
     }
 
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
+    public String getEventDate() {
+        return eventDate;
     }
 
     public String getClient() {
         return client;
-    }
-
-    public void setClient(String client) {
-        this.client = client;
     }
 }

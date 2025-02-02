@@ -2,21 +2,16 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-    <top>
-        <Label text="Order Summary" style="-fx-font-size: 18px;" BorderPane.alignment="center"/>
-    </top>
-    <center>
-        <TableView fx:id="orderSummaryTable">
-            <columns>
-                <TableColumn fx:id="bookingIDColumn" text="Booking ID" />
-                <TableColumn fx:id="venueColumn" text="Venue" />
-                <TableColumn fx:id="clientColumn" text="Client" />
-                <TableColumn fx:id="commissionColumn" text="Commission" />
-            </columns>
-        </TableView>
-    </center>
-    <bottom>
-        <Button text="Back to Dashboard" onAction="#handleBackToDashboard" />
-    </bottom>
-</BorderPane>
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" spacing="10">
+    <Label text="Order Summary" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+
+    <TableView fx:id="orderTable" prefWidth="600">
+        <columns>
+            <TableColumn text="Order ID" fx:id="colOrderId" prefWidth="150" />
+            <TableColumn text="Event Name" fx:id="colOrderEventName" prefWidth="200" />
+            <TableColumn text="Total Commission" fx:id="colCommission" prefWidth="150" />
+        </columns>
+    </TableView>
+
+    <Button text="Back to Menu" onAction="#handleBack" />
+</VBox>

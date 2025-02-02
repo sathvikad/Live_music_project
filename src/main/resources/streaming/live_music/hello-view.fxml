@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="streaming.live_music.HelloController">
+    <top>
+        <Label text="Live Music Venue Matchmaker" style="-fx-font-size: 24px;" BorderPane.alignment="center"/>
+    </top>
+    <center>
+        <VBox spacing="10" alignment="CENTER">
+            <Button text="View Job Requests" onAction="#handleJobRequests"/>
+            <Button text="View Venues" onAction="#handleVenues"/>
+            <Button text="Auto-Match Venues" onAction="#handleAutoMatch"/>
+            <Button text="Order Summary" onAction="#handleOrderSummary"/>
+        </VBox>
+    </center>
+</BorderPane>

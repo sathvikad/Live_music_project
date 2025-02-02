@@ -2,21 +2,23 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="streaming.live_music.VenueListController">
     <top>
-        <Label text="Available Venues" style="-fx-font-size: 18px;" BorderPane.alignment="center"/>
+        <Label text="Available Venues" style="-fx-font-size: 24px; -fx-font-weight: bold;"
+               BorderPane.alignment="center"/>
     </top>
     <center>
-        <TableView fx:id="venueTable">
+        <TableView fx:id="venueTable" prefHeight="300" prefWidth="400">
             <columns>
-                <TableColumn fx:id="venueNameColumn" text="Venue Name" />
-                <TableColumn fx:id="capacityColumn" text="Capacity" />
-                <TableColumn fx:id="locationColumn" text="Location" />
-                <TableColumn fx:id="availabilityColumn" text="Availability" />
+                <TableColumn fx:id="venueNameColumn" text="Venue Name" prefWidth="150"/>
+                <TableColumn fx:id="capacityColumn" text="Capacity" prefWidth="100"/>
+                <TableColumn fx:id="locationColumn" text="Location" prefWidth="150"/>
+                <TableColumn fx:id="availabilityColumn" text="Availability" prefWidth="100"/>
             </columns>
         </TableView>
     </center>
     <bottom>
-        <Button text="Back to Dashboard" onAction="#handleBackToDashboard" />
+        <Button text="Back to Dashboard" onAction="#handleBackToDashboard" style="-fx-padding: 10px;"/>
     </bottom>
 </BorderPane>

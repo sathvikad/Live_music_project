@@ -2,21 +2,23 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="streaming.live_music.JobRequestController">
     <top>
-        <Label text="Job Requests" style="-fx-font-size: 18px;" BorderPane.alignment="center"/>
+        <Label text="Job Requests" style="-fx-font-size: 24px; -fx-font-weight: bold;"
+               BorderPane.alignment="center"/>
     </top>
     <center>
-        <TableView fx:id="jobRequestTable">
+        <TableView fx:id="jobRequestTable" prefHeight="300" prefWidth="400">
             <columns>
-                <TableColumn fx:id="idColumn" text="Request ID" />
-                <TableColumn fx:id="clientColumn" text="Client" />
-                <TableColumn fx:id="eventTypeColumn" text="Event Type" />
-                <TableColumn fx:id="dateColumn" text="Event Date" />
+                <TableColumn fx:id="idColumn" text="Request ID" prefWidth="100"/>
+                <TableColumn fx:id="clientColumn" text="Client" prefWidth="150"/>
+                <TableColumn fx:id="eventTypeColumn" text="Event Type" prefWidth="150"/>
+                <TableColumn fx:id="dateColumn" text="Event Date" prefWidth="150"/>
             </columns>
         </TableView>
     </center>
     <bottom>
-        <Button text="Back to Dashboard" onAction="#handleBackToDashboard" />
+        <Button text="Back to Dashboard" onAction="#handleBackToDashboard" style="-fx-padding: 10px;"/>
     </bottom>
 </BorderPane>

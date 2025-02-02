@@ -2,35 +2,47 @@ package streaming.live_music;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class HelloController {
 
     @FXML
     private void handleJobRequests(ActionEvent event) {
-        showInfo("Navigating to Job Requests...");
+        loadScene("jobRequest.fxml");
     }
 
     @FXML
     private void handleVenues(ActionEvent event) {
-        showInfo("Navigating to Venue List...");
+        loadScene("venueList.fxml");
     }
 
     @FXML
     private void handleAutoMatch(ActionEvent event) {
-        showInfo("Navigating to Auto-Match Venues...");
+        loadScene("autoMatch.fxml");
     }
 
     @FXML
     private void handleOrderSummary(ActionEvent event) {
-        showInfo("Navigating to Order Summary...");
+        loadScene("orderSummary.fxml");
     }
 
-    private void showInfo(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Navigation");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+    private void loadScene(String fxmlFile) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlFile));
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = (Stage) scene.getWindow();
+            stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleBackToDashboard(ActionEvent event) {
+        loadScene("hello-view.fxml");
     }
 }

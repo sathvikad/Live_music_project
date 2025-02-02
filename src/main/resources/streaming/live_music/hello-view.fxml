@@ -8,7 +8,7 @@
         <Label text="Live Music Venue Matchmaker" style="-fx-font-size: 24px;" BorderPane.alignment="center"/>
     </top>
     <center>
-        <VBox spacing="10" alignment="CENTER">
+        <VBox spacing="15" alignment="CENTER">
             <Button text="View Job Requests" onAction="#handleJobRequests"/>
             <Button text="View Venues" onAction="#handleVenues"/>
             <Button text="Auto-Match Venues" onAction="#handleAutoMatch"/>

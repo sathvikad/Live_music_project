@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <top>
+        <Label text="Order Summary" style="-fx-font-size: 18px;" BorderPane.alignment="center"/>
+    </top>
+    <center>
+        <TableView fx:id="orderSummaryTable">
+            <columns>
+                <TableColumn fx:id="bookingIDColumn" text="Booking ID" />
+                <TableColumn fx:id="venueColumn" text="Venue" />
+                <TableColumn fx:id="clientColumn" text="Client" />
+                <TableColumn fx:id="commissionColumn" text="Commission" />
+            </columns>
+        </TableView>
+    </center>
+    <bottom>
+        <Button text="Back to Dashboard" onAction="#handleBackToDashboard" />
+    </bottom>
+</BorderPane>

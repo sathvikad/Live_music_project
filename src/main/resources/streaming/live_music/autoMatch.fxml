@@ -3,9 +3,9 @@
 <?import javafx.scene.control.*?>
 
 <VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="streaming.live_music.AutoMatchController" alignment="CENTER" spacing="10">
+      fx:controller="streaming.live_music.AutoMatchController" alignment="CENTER" spacing="10" prefWidth="600" prefHeight="300">
 
     <Label text="Auto Match Venues" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
-
-    <Button text="Back to Menu" onAction="#handleBack" />
+    <Button text="Start Matching" onAction="#handleStartMatching" prefWidth="200" />
+    <Button text="Back to Dashboard" onAction="#handleBack" prefWidth="150" />
 </VBox>

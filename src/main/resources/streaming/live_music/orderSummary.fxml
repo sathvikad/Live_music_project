@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
 
 <VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="streaming.live_music.OrderSummaryController" alignment="CENTER" spacing="10">
+      fx:controller="streaming.live_music.OrderSummaryController" alignment="CENTER" spacing="10" prefWidth="600" prefHeight="400">
 
     <Label text="Order Summary" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
-
     <TableView fx:id="orderTable" prefWidth="600">
         <columns>
             <TableColumn text="Order ID" fx:id="colOrderId" prefWidth="150" />
-            <TableColumn text="Event Name" fx:id="colOrderEventName" prefWidth="250" />
+            <TableColumn text="Event Name" fx:id="colOrderEventName" prefWidth="200" />
             <TableColumn text="Total Commission" fx:id="colCommission" prefWidth="150" />
         </columns>
     </TableView>
-
-    <Button text="Back to Main Menu" onAction="#handleBack" />
+    <Button text="Back to Dashboard" onAction="#handleBack" prefWidth="150" />
 </VBox>

@@ -13,15 +13,12 @@ public class SceneSwitcher {
 
     public static void switchScene(ActionEvent event, String fxmlFilePath) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(SceneSwitcher.class.getResource(fxmlFilePath));
-            Parent root = fxmlLoader.load();
+            Parent root = FXMLLoader.load(SceneSwitcher.class.getResource(fxmlFilePath));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Error loading scene: " + fxmlFilePath);
         }
     }
-
 }

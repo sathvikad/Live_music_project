@@ -6,7 +6,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
-public class LoginController {
+public class RegisterController {
 
     @FXML
     private TextField usernameField;
@@ -17,20 +17,22 @@ public class LoginController {
     private final UserDAO userDAO = new UserDAO();
 
     @FXML
-    public void handleLogin(ActionEvent event) {
+    public void handleRegister(ActionEvent event) {
         String username = usernameField.getText();
         String password = passwordField.getText();
+        String role = "staff";  // Default role for registration
 
-        if (userDAO.loginUser(username, password)) {
-            SceneSwitcher.switchScene(event, "/streaming/live_music/staffDashboard.fxml");
+        if (userDAO.registerUser(username, password, role)) {
+            showAlert("Success", "Registration successful! You can now log in.");
+            SceneSwitcher.switchScene(event, "/streaming/live_music/login.fxml");
         } else {
-            showAlert("Login Failed", "Invalid username or password.");
+            showAlert("Error", "Registration failed. Username might already be taken.");
         }
     }
 
     @FXML
-    public void switchToRegister(ActionEvent event) {
-        SceneSwitcher.switchScene(event, "/streaming/live_music/register.fxml");
+    public void switchToLogin(ActionEvent event) {
+        SceneSwitcher.switchScene(event, "/streaming/live_music/login.fxml");
     }
 
     private void showAlert(String title, String message) {

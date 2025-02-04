@@ -2,7 +2,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" spacing="10">
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="streaming.live_music.VenueListController" alignment="CENTER" spacing="10">
+
     <Label text="Venue List" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
 
     <TableView fx:id="venueTable" prefWidth="600">
@@ -13,5 +15,5 @@
         </columns>
     </TableView>
 
-    <Button text="Back to Menu" onAction="#handleBack" />
+    <Button text="Back to Main Menu" onAction="#handleBack" />
 </VBox>

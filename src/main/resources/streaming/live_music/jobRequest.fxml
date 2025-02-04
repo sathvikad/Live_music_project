@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" spacing="10" alignment="CENTER">
+
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="streaming.live_music.JobRequestController" alignment="CENTER" spacing="10">
+
     <Label text="Job Requests" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
 
     <TableView fx:id="jobTable" prefWidth="600">
@@ -12,5 +15,5 @@
         </columns>
     </TableView>
 
-    <Button text="Back to Menu" onAction="#handleBack" />
+    <Button text="Back to Menu" onAction="#handleBackToMain" />
 </VBox>

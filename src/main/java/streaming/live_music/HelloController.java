@@ -1,28 +1,28 @@
 package streaming.live_music;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
+import streaming.live_music.SceneSwitcher;
 
 public class HelloController {
 
     @FXML
-    private void handleJobRequests(MouseEvent event) {
-        SceneSwitcher.switchScene((Button) event.getSource(), "/streaming/live_music/jobRequest.fxml");
+    private void handleJobRequests(ActionEvent event) {
+        SceneSwitcher.switchScene(event, "/streaming/live_music/jobRequest.fxml");
     }
 
     @FXML
-    private void handleAutoMatch(MouseEvent event) {
-        SceneSwitcher.switchScene((Button) event.getSource(), "/streaming/live_music/autoMatch.fxml");
+    private void handleAutoMatch(ActionEvent event) {
+        SceneSwitcher.switchScene(event, "/streaming/live_music/autoMatch.fxml");
     }
 
     @FXML
-    private void handleOrderSummary(MouseEvent event) {
-        SceneSwitcher.switchScene((Button) event.getSource(), "/streaming/live_music/orderSummary.fxml");
+    private void handleOrderSummary(ActionEvent event) {
+        SceneSwitcher.switchScene(event, "/streaming/live_music/orderSummary.fxml");
     }
 
     @FXML
-    private void handleVenueList(MouseEvent event) {
-        SceneSwitcher.switchScene((Button) event.getSource(), "/streaming/live_music/venueList.fxml");
+    private void handleVenueList(ActionEvent event) {
+        SceneSwitcher.switchScene(event, "/streaming/live_music/venueList.fxml");
     }
 }

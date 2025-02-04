@@ -1,13 +1,13 @@
 package streaming.live_music;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
+import streaming.live_music.SceneSwitcher;
 
 public class JobRequestController {
 
     @FXML
-    private void handleBackToMain(MouseEvent event) {
-        SceneSwitcher.switchScene((Button) event.getSource(), "/streaming/live_music/hello-view.fxml");
+    private void handleBackToMain(ActionEvent event) {
+        SceneSwitcher.switchScene(event, "/streaming/live_music/hello-view.fxml");
     }
 }

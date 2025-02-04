@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
 
-<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" spacing="10">
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="streaming.live_music.AutoMatchController" alignment="CENTER" spacing="10">
+
     <Label text="Auto Match Venues" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
-
-    <Button text="Auto Match Now" onAction="#onAutoMatch" prefWidth="200" />
-
-    <TableView fx:id="recommendationTable" prefWidth="600">
-        <columns>
-            <TableColumn text="Venue Name" fx:id="colVenueName" prefWidth="200" />
-            <TableColumn text="Match Score" fx:id="colMatchScore" prefWidth="200" />
-            <TableColumn text="Capacity" fx:id="colCapacity" prefWidth="200" />
-        </columns>
-    </TableView>
 
     <Button text="Back to Menu" onAction="#handleBack" />
 </VBox>

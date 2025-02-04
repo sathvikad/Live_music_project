@@ -25,9 +25,4 @@ public class HelloController {
     private void handleVenueList(MouseEvent event) {
         SceneSwitcher.switchScene((Button) event.getSource(), "/streaming/live_music/venueList.fxml");
     }
-    @FXML
-    private void handleOrderScreen(MouseEvent event) {
-        SceneSwitcher.switchScene((Button) event.getSource(), "/streaming/live_music/order.fxml");
-    }
-
 }

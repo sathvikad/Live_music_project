@@ -15,5 +15,5 @@
         </columns>
     </TableView>
 
-    <Button text="Back to Menu" onAction="#handleBackToMain" />
+    <Button text="Back to Main Menu" onAction="#handleBackToMain" />
 </VBox>

@@ -1,13 +1,34 @@
 package streaming.live_music;
 
-import javafx.event.ActionEvent;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import streaming.live_music.SceneSwitcher;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 public class VenueListController {
 
     @FXML
-    private void handleBack(ActionEvent event) {
-        SceneSwitcher.switchScene(event, "/streaming/live_music/hello-view.fxml");
+    private TableView<Venue> venueTable;
+
+    @FXML
+    private TableColumn<Venue, String> nameColumn;
+
+    @FXML
+    private TableColumn<Venue, String> locationColumn;
+
+    @FXML
+    private TableColumn<Venue, Integer> capacityColumn;
+
+    public void initialize() {
+        // Setting up column property mappings
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
+        capacityColumn.setCellValueFactory(new PropertyValueFactory<>("capacity"));
+
+        // Populate table with data from DataStore
+        ObservableList<Venue> venues = FXCollections.observableArrayList(DataStore.venues);
+        venueTable.setItems(venues);
     }
 }

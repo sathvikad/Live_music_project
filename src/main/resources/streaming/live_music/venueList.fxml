@@ -2,16 +2,13 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="streaming.live_music.VenueListController" alignment="CENTER" spacing="10" prefWidth="600" prefHeight="400">
-
-    <Label text="Venue List" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
-    <TableView fx:id="venueTable" prefWidth="600">
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="streaming.live_music.VenueListController">
+    <Label text="Venue List" style="-fx-font-size: 20px;" />
+    <TableView fx:id="venueTable">
         <columns>
-            <TableColumn text="Venue Name" fx:id="colVenueName" prefWidth="200" />
-            <TableColumn text="Capacity" fx:id="colVenueCapacity" prefWidth="150" />
-            <TableColumn text="Location" fx:id="colVenueLocation" prefWidth="250" />
+            <TableColumn fx:id="nameColumn" text="Name" />
+            <TableColumn fx:id="locationColumn" text="Location" />
+            <TableColumn fx:id="capacityColumn" text="Capacity" />
         </columns>
     </TableView>
-    <Button text="Back to Dashboard" onAction="#handleBack" prefWidth="150" />
 </VBox>

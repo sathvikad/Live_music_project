@@ -5,10 +5,10 @@ public class Venue {
     private int capacity;
     private String location;
 
-    public Venue(String name, int capacity, String location) {
+    public Venue(String name, String location, int capacity) {
         this.name = name;
-        this.capacity = capacity;
         this.location = location;
+        this.capacity = capacity;
     }
 
     public String getName() {

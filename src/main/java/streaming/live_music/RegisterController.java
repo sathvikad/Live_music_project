@@ -1,10 +1,10 @@
 package streaming.live_music;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.Node;
+import javafx.event.ActionEvent;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 public class RegisterController {
 
@@ -14,31 +14,44 @@ public class RegisterController {
     @FXML
     private PasswordField passwordField;
 
-    private final UserDAO userDAO = new UserDAO();
+    @FXML
+    private TextField firstNameField;
 
     @FXML
-    public void handleRegister(ActionEvent event) {
+    private TextField lastNameField;
+
+    @FXML
+    private CheckBox isManagerCheckbox;
+
+    @FXML
+    private Label statusLabel;
+
+    // Switch to login screen
+    @FXML
+    private void switchToLogin(ActionEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        SceneSwitcher.switchScene(stage, "/streaming/live_music/login.fxml");
+    }
+
+    // Handle user registration
+    @FXML
+    private void handleRegister(ActionEvent event) {
         String username = usernameField.getText();
         String password = passwordField.getText();
-        String role = "staff";  // Default role for registration
+        String firstName = firstNameField.getText();
+        String lastName = lastNameField.getText();
+        boolean isManager = isManagerCheckbox.isSelected();
 
-        if (userDAO.registerUser(username, password, role)) {
-            showAlert("Success", "Registration successful! You can now log in.");
-            SceneSwitcher.switchScene(event, "/streaming/live_music/login.fxml");
-        } else {
-            showAlert("Error", "Registration failed. Username might already be taken.");
+        if (username.isEmpty() || password.isEmpty() || firstName.isEmpty() || lastName.isEmpty()) {
+            statusLabel.setText("All fields must be filled!");
+            return;
         }
-    }
 
-    @FXML
-    public void switchToLogin(ActionEvent event) {
-        SceneSwitcher.switchScene(event, "/streaming/live_music/login.fxml");
-    }
-
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setContentText(message);
-        alert.showAndWait();
+        if (DataStore.addUser(username, password, firstName, lastName, isManager)) {
+            statusLabel.setText("Registration successful. Redirecting to login...");
+            switchToLogin(event);
+        } else {
+            statusLabel.setText("Username already exists. Try a different one.");
+        }
     }
 }

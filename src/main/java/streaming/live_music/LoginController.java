@@ -1,10 +1,10 @@
 package streaming.live_music;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.Node;
+import javafx.event.ActionEvent;
+import javafx.stage.Stage;
 
 public class LoginController {
 
@@ -14,29 +14,33 @@ public class LoginController {
     @FXML
     private PasswordField passwordField;
 
-    private final UserDAO userDAO = new UserDAO();
-
     @FXML
+    private Label errorLabel;
+
+    // Handle login
     public void handleLogin(ActionEvent event) {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-        if (userDAO.loginUser(username, password)) {
-            SceneSwitcher.switchScene(event, "/streaming/live_music/staffDashboard.fxml");
+        // Basic user validation (replace with database validation if needed)
+        User user = DataStore.users.get(username);
+
+        if (user != null && user.getPassword().equals(password)) {
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            if (user.isManager()) {
+                SceneSwitcher.switchScene(stage, "/streaming/live_music/managerDashboard.fxml");
+            } else {
+                SceneSwitcher.switchScene(stage, "/streaming/live_music/staffDashboard.fxml");
+            }
         } else {
-            showAlert("Login Failed", "Invalid username or password.");
+            errorLabel.setText("Invalid credentials. Please try again.");
         }
     }
 
+    // Handle switching to registration screen
     @FXML
-    public void switchToRegister(ActionEvent event) {
-        SceneSwitcher.switchScene(event, "/streaming/live_music/register.fxml");
-    }
-
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setContentText(message);
-        alert.showAndWait();
+    private void switchToRegister(ActionEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        SceneSwitcher.switchScene(stage, "/streaming/live_music/register.fxml");
     }
 }

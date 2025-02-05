@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
 
 <VBox alignment="CENTER" spacing="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="streaming.live_music.LoginController">
+      fx:controller="streaming.live_music.LoginController" style="-fx-padding: 20;">
 
-    <Label text="Login" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+    <!-- Login Header -->
+    <Label text="Login" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+
+    <!-- Username and Password Fields -->
     <TextField fx:id="usernameField" promptText="Username" />
     <PasswordField fx:id="passwordField" promptText="Password" />
+
+    <!-- Login Button -->
     <Button text="Login" onAction="#handleLogin" />
-    <Hyperlink text="Register" onAction="#switchToRegister" />
+
+    <!-- Error Label for invalid login -->
+    <Label fx:id="errorLabel" textFill="red" />
+
+    <!-- Register Hyperlink -->
+    <Hyperlink text="Don't have an account? Register here" onAction="#switchToRegister" />
 </VBox>

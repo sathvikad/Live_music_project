@@ -2,21 +2,15 @@ package streaming.live_music;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.stage.Stage;
 
 public class ManagerDashboardController {
 
     @FXML
     private void handleViewVenues(ActionEvent event) {
-        SceneSwitcher.switchScene(event, "/streaming/live_music/venueList.fxml");
-    }
-
-    @FXML
-    private void handleAddVenue(ActionEvent event) {
-        SceneSwitcher.switchScene(event, "/streaming/live_music/addVenue.fxml");
-    }
-
-    @FXML
-    private void handleLogout(ActionEvent event) {
-        SceneSwitcher.switchScene(event, "/streaming/live_music/login.fxml");
+        // Get the current stage from the event source
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        SceneSwitcher.switchScene(stage, "/streaming/live_music/venueList.fxml");
     }
 }

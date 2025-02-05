@@ -18,4 +18,10 @@ public class HelloController {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         SceneSwitcher.switchScene(stage, "/streaming/live_music/autoMatch.fxml");
     }
+
+    @FXML
+    private void switchToRegistration(ActionEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        SceneSwitcher.switchScene(stage, "/streaming/live_music/register.fxml");
+    }
 }

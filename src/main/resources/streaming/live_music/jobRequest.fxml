@@ -6,11 +6,12 @@
 <?import javafx.scene.control.TableColumn?>
 
 <VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="streaming.live_music.JobRequestController" alignment="CENTER" spacing="10" prefWidth="600" prefHeight="400">
+      fx:controller="streaming.live_music.JobRequestController" alignment="CENTER" spacing="15" prefWidth="600" prefHeight="400" style="-fx-padding: 20;">
 
-    <Label text="Job Requests" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+    <Label text="Job Requests" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
 
-    <TableView fx:id="jobTable">
+    <!-- TableView for displaying job requests -->
+    <TableView fx:id="jobTable" prefHeight="250">
         <columns>
             <TableColumn text="Event Name" fx:id="eventNameColumn" prefWidth="200"/>
             <TableColumn text="Event Date" fx:id="eventDateColumn" prefWidth="200"/>
@@ -18,5 +19,7 @@
         </columns>
     </TableView>
 
-    <Button text="Back to Main Menu" onAction="#handleBackToMain" />
+    <!-- Back button -->
+    <Button text="Back to Main Menu" onAction="#handleBackToMain" style="-fx-pref-width: 150px;" />
+
 </VBox>

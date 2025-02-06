@@ -7,13 +7,16 @@
 
     <VBox alignment="CENTER" spacing="10">
         <Label text="Register" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+
         <TextField fx:id="usernameField" promptText="Username" />
         <PasswordField fx:id="passwordField" promptText="Password" />
         <TextField fx:id="firstNameField" promptText="First Name" />
         <TextField fx:id="lastNameField" promptText="Last Name" />
         <CheckBox fx:id="isManagerCheckbox" text="Manager Account" />
+
         <Button text="Register" onAction="#handleRegister" />
         <Button text="Back to Login" onAction="#switchToLogin" />
+
         <Label fx:id="statusLabel" textFill="red" />
     </VBox>
 </AnchorPane>

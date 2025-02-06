@@ -1,6 +1,7 @@
 package streaming.live_music;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -17,23 +18,44 @@ public class AddVenueController {
     private TextField capacityField;
     @FXML
     private TextField eventTypeField;
-
     @FXML
     private Label statusLabel;
 
     @FXML
     public void handleAddVenue() {
         try {
-            String name = nameField.getText();
-            String location = locationField.getText();
-            int capacity = Integer.parseInt(capacityField.getText());
-            String eventType = eventTypeField.getText();
+            String name = nameField.getText().trim();
+            String location = locationField.getText().trim();
+            String eventType = eventTypeField.getText().trim();
+            String capacityText = capacityField.getText().trim();
+
+            // Validate input fields
+            if (name.isEmpty() || location.isEmpty() || capacityText.isEmpty() || eventType.isEmpty()) {
+                showAlert("Input Error", "All fields are required. Please fill out all fields.");
+                return;
+            }
+
+            // Validate capacity
+            int capacity;
+            try {
+                capacity = Integer.parseInt(capacityText);
+                if (capacity <= 0) {
+                    throw new NumberFormatException();
+                }
+            } catch (NumberFormatException e) {
+                showAlert("Input Error", "Capacity must be a positive number.");
+                return;
+            }
 
             Venue newVenue = new Venue(name, location, capacity, eventType);
             DataStore.addVenue(newVenue);
             statusLabel.setText("Venue added successfully.");
-        } catch (NumberFormatException e) {
-            statusLabel.setText("Invalid capacity. Please enter a valid number.");
+
+            // Optionally, clear the fields after adding the venue
+            clearFields();
+
+        } catch (Exception e) {
+            showAlert("Error", "An unexpected error occurred: " + e.getMessage());
         }
     }
 
@@ -41,5 +63,20 @@ public class AddVenueController {
     public void handleBack(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         SceneSwitcher.switchScene(stage, "/streaming/live_music/managerDashboard.fxml");
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void clearFields() {
+        nameField.clear();
+        locationField.clear();
+        capacityField.clear();
+        eventTypeField.clear();
     }
 }

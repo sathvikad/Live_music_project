@@ -1,6 +1,9 @@
 package streaming.live_music;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -19,20 +22,58 @@ public class JobRequestController {
     @FXML
     public void handleSubmitRequest() {
         try {
-            String eventName = eventNameField.getText();
-            String preferredLocation = preferredLocationField.getText();
-            int expectedAttendees = Integer.parseInt(expectedAttendeesField.getText());
+            String eventName = eventNameField.getText().trim();
+            String preferredLocation = preferredLocationField.getText().trim();
+            String attendeesText = expectedAttendeesField.getText().trim();
 
+            // Validate fields
+            if (eventName.isEmpty() || preferredLocation.isEmpty() || attendeesText.isEmpty()) {
+                showAlert("Input Error", "All fields are required. Please fill out all fields.");
+                return;
+            }
+
+            // Validate attendees
+            int expectedAttendees;
+            try {
+                expectedAttendees = Integer.parseInt(attendeesText);
+                if (expectedAttendees <= 0) {
+                    throw new NumberFormatException();
+                }
+            } catch (NumberFormatException e) {
+                showAlert("Input Error", "Expected attendees must be a positive number.");
+                return;
+            }
+
+            // Create and add job request
             JobRequest jobRequest = new JobRequest(eventName, preferredLocation, expectedAttendees);
             DataStore.addJobRequest(jobRequest);
-            statusLabel.setText("Job request submitted successfully.");
-        } catch (NumberFormatException e) {
-            statusLabel.setText("Invalid number of attendees. Please enter a valid number.");
+
+            // Display success message
+            showAlert("Success", "Job request submitted successfully.");
+            clearFields();
+
+        } catch (Exception e) {
+            showAlert("Error", "An unexpected error occurred: " + e.getMessage());
         }
     }
 
     @FXML
-    public void handleBackToMain() {
-        SceneSwitcher.switchScene((Stage) eventNameField.getScene().getWindow(), "/streaming/live_music/managerDashboard.fxml");
+    public void handleBackToMain(ActionEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        SceneSwitcher.switchScene(stage, "/streaming/live_music/managerDashboard.fxml");
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void clearFields() {
+        eventNameField.clear();
+        preferredLocationField.clear();
+        expectedAttendeesField.clear();
     }
 }

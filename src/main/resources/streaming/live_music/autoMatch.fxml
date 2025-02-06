@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="streaming.live_music.AutoMatchController" alignment="CENTER" spacing="15" prefWidth="600" prefHeight="400" style="-fx-padding: 20;">
+<VBox alignment="CENTER" spacing="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="streaming.live_music.AutoMatchController">
 
     <Label text="Auto Match Venues" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
 
-    <TextArea fx:id="resultArea" prefWidth="500" prefHeight="200" wrapText="true" editable="false"
-              promptText="Matching results will be displayed here..." />
+    <TextArea fx:id="matchResultsArea" prefWidth="500" prefHeight="300" wrapText="true" />
 
-    <HBox spacing="10" alignment="CENTER">
-        <Button text="Start Matching" onAction="#handleStartMatching" prefWidth="200" />
-        <Button text="Back to Dashboard" onAction="#handleBack" prefWidth="150" />
+    <!-- Fixed HBox reference -->
+    <HBox spacing="15">
+        <Button text="Start Matching" onAction="#handleStartMatching" />
+        <Button text="Back to Dashboard" onAction="#handleBack" />
     </HBox>
 </VBox>

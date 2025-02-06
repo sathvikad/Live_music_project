@@ -1,10 +1,10 @@
 package streaming.live_music;
 
-import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.event.ActionEvent;
-import javafx.scene.control.*;
-import javafx.stage.Stage;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 
 public class RegisterController {
 
@@ -21,37 +21,26 @@ public class RegisterController {
     private TextField lastNameField;
 
     @FXML
-    private CheckBox isManagerCheckbox;
-
-    @FXML
-    private Label statusLabel;
-
-    // Switch to login screen
-    @FXML
-    private void switchToLogin(ActionEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        SceneSwitcher.switchScene(stage, "/streaming/live_music/login.fxml");
-    }
-
-    // Handle user registration
-    @FXML
     private void handleRegister(ActionEvent event) {
         String username = usernameField.getText();
         String password = passwordField.getText();
         String firstName = firstNameField.getText();
         String lastName = lastNameField.getText();
-        boolean isManager = isManagerCheckbox.isSelected();
 
-        if (username.isEmpty() || password.isEmpty() || firstName.isEmpty() || lastName.isEmpty()) {
-            statusLabel.setText("All fields must be filled!");
-            return;
-        }
+        boolean isManager = false; // Change this based on UI selection if applicable
 
         if (DataStore.addUser(username, password, firstName, lastName, isManager)) {
-            statusLabel.setText("Registration successful. Redirecting to login...");
-            switchToLogin(event);
+            showAlert("Registration Successful", "You have successfully registered.");
         } else {
-            statusLabel.setText("Username already exists. Try a different one.");
+            showAlert("Registration Failed", "Username already exists.");
         }
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

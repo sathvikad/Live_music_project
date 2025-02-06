@@ -1,48 +1,42 @@
 package streaming.live_music;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.scene.Node;
+import javafx.event.ActionEvent;
 
 public class AddVenueController {
 
     @FXML
-    private TextField venueNameField;
-
+    private TextField nameField;
     @FXML
-    private TextField venueLocationField;
-
+    private TextField locationField;
     @FXML
-    private TextField venueCapacityField;
+    private TextField capacityField;
+    @FXML
+    private TextField eventTypeField;
 
     @FXML
     private Label statusLabel;
 
-    // Handles adding a new venue to the data store
     @FXML
     public void handleAddVenue() {
         try {
-            String name = venueNameField.getText();
-            String location = venueLocationField.getText();
-            int capacity = Integer.parseInt(venueCapacityField.getText());
+            String name = nameField.getText();
+            String location = locationField.getText();
+            int capacity = Integer.parseInt(capacityField.getText());
+            String eventType = eventTypeField.getText();
 
-            if (name.isEmpty() || location.isEmpty()) {
-                statusLabel.setText("Name and location cannot be empty.");
-                return;
-            }
-
-            Venue newVenue = new Venue(name, location, capacity);
-            DataStore.venues.add(newVenue);
+            Venue newVenue = new Venue(name, location, capacity, eventType);
+            DataStore.addVenue(newVenue);
             statusLabel.setText("Venue added successfully.");
         } catch (NumberFormatException e) {
             statusLabel.setText("Invalid capacity. Please enter a valid number.");
         }
     }
 
-    // Navigates back to the main dashboard
     @FXML
     public void handleBack(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

@@ -10,7 +10,7 @@ public class VenueDAO {
 
     public List<Venue> getAllVenues() {
         List<Venue> venues = new ArrayList<>();
-        String query = "SELECT name, location, capacity FROM venues";
+        String query = "SELECT name, location, capacity, eventType FROM venues";
 
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:lmvm_database.db");
              PreparedStatement pstmt = conn.prepareStatement(query);
@@ -20,7 +20,8 @@ public class VenueDAO {
                 venues.add(new Venue(
                         rs.getString("name"),
                         rs.getString("location"),
-                        rs.getInt("capacity")
+                        rs.getInt("capacity"),
+                        rs.getString("eventType")
                 ));
             }
 

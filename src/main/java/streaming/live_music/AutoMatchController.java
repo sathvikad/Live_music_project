@@ -1,9 +1,9 @@
 package streaming.live_music;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
-import javafx.stage.Stage;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AutoMatchController {
 
@@ -13,6 +13,7 @@ public class AutoMatchController {
     @FXML
     public void handleStartMatching() {
         StringBuilder results = new StringBuilder();
+        List<VenueRecommendation> recommendations = new ArrayList<>();
 
         for (JobRequest jobRequest : DataStore.jobRequests) {
             boolean matchFound = false;
@@ -22,39 +23,50 @@ public class AutoMatchController {
                         venue.getCapacity() >= jobRequest.getExpectedAttendees() &&
                         venue.getEventType().equalsIgnoreCase(jobRequest.getEventName())) {
 
-                    results.append("Match Found:\n")
-                            .append("Event Name: ").append(jobRequest.getEventName()).append("\n")
-                            .append("Venue Name: ").append(venue.getName()).append("\n")
-                            .append("Location: ").append(venue.getLocation()).append("\n")
-                            .append("Capacity: ").append(venue.getCapacity()).append("\n")
-                            .append("Event Type: ").append(venue.getEventType()).append("\n\n");
+                    int matchScore = calculateMatchScore(venue, jobRequest);  // Optional scoring logic
+                    recommendations.add(new VenueRecommendation(
+                            venue.getName(),
+                            matchScore,
+                            venue.getCapacity(),
+                            venue.getLocation(),
+                            venue.getEventType()
+                    ));
                     matchFound = true;
                 }
             }
 
-            if (!matchFound) {
+            if (matchFound) {
+                for (VenueRecommendation recommendation : recommendations) {
+                    results.append("Matched Venue Recommendation:\n")
+                            .append("---------------------------------\n")
+                            .append("Event Name: ").append(jobRequest.getEventName()).append("\n")
+                            .append("Venue Name: ").append(recommendation.getVenueName()).append("\n")
+                            .append("Location: ").append(recommendation.getLocation()).append("\n")
+                            .append("Capacity: ").append(recommendation.getCapacity()).append("\n")
+                            .append("Event Type: ").append(recommendation.getEventType()).append("\n")
+                            .append("Match Score: ").append(recommendation.getMatchScore()).append("%\n")
+                            .append("---------------------------------\n\n");
+                }
+            } else {
                 results.append("No match found for Event: ").append(jobRequest.getEventName()).append("\n\n");
             }
         }
 
-        // Display results
-        if (results.length() > 0) {
-            matchResultsArea.setText(results.toString());
-        } else {
-            showAlert("No Matches", "No venues matched the job requests.");
+        matchResultsArea.setText(results.toString());
+    }
+
+    private int calculateMatchScore(Venue venue, JobRequest jobRequest) {
+        // Example scoring logic (expand based on criteria)
+        int score = 0;
+        if (venue.getLocation().equalsIgnoreCase(jobRequest.getPreferredLocation())) {
+            score += 50;  // Location match weight
         }
-    }
-
-    @FXML
-    private void handleBack() {
-        SceneSwitcher.switchScene((Stage) matchResultsArea.getScene().getWindow(), "/streaming/live_music/managerDashboard.fxml");
-    }
-
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+        if (venue.getEventType().equalsIgnoreCase(jobRequest.getEventName())) {
+            score += 30;  // Event type match weight
+        }
+        if (venue.getCapacity() >= jobRequest.getExpectedAttendees()) {
+            score += 20;  // Capacity match weight
+        }
+        return score;
     }
 }

@@ -21,6 +21,8 @@ public class AddVenueController {
     @FXML
     private Label statusLabel;
 
+    private VenueDAO venueDAO = new VenueDAO();  // DAO for database operations
+
     @FXML
     public void handleAddVenue() {
         try {
@@ -48,11 +50,15 @@ public class AddVenueController {
             }
 
             Venue newVenue = new Venue(name, location, capacity, eventType);
-            DataStore.addVenue(newVenue);
-            statusLabel.setText("Venue added successfully.");
 
-            // Optionally, clear the fields after adding the venue
-            clearFields();
+            // Add venue to database using VenueDAO
+            boolean success = venueDAO.addVenue(newVenue);
+            if (success) {
+                statusLabel.setText("Venue added successfully.");
+                clearFields();  // Clear fields after successful addition
+            } else {
+                showAlert("Database Error", "Failed to add venue to the database.");
+            }
 
         } catch (Exception e) {
             showAlert("Error", "An unexpected error occurred: " + e.getMessage());

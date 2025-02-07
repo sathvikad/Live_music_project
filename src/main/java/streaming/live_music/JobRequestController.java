@@ -19,6 +19,8 @@ public class JobRequestController {
     @FXML
     private Label statusLabel;
 
+    private JobRequestDAO jobRequestDAO = new JobRequestDAO();  // DAO for database operations
+
     @FXML
     public void handleSubmitRequest() {
         try {
@@ -44,13 +46,16 @@ public class JobRequestController {
                 return;
             }
 
-            // Create and add job request
+            // Create and add job request to database
             JobRequest jobRequest = new JobRequest(eventName, preferredLocation, expectedAttendees);
-            DataStore.addJobRequest(jobRequest);
+            boolean success = jobRequestDAO.addJobRequest(jobRequest);
 
-            // Display success message
-            showAlert("Success", "Job request submitted successfully.");
-            clearFields();
+            if (success) {
+                showAlert("Success", "Job request submitted successfully.");
+                clearFields();  // Clear fields after successful submission
+            } else {
+                showAlert("Database Error", "Failed to submit the job request.");
+            }
 
         } catch (Exception e) {
             showAlert("Error", "An unexpected error occurred: " + e.getMessage());

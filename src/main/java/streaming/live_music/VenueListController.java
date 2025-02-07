@@ -45,6 +45,7 @@ public class VenueListController {
     private void loadVenueData() {
         List<Venue> venues = venueDAO.getAllVenues();
         if (!venues.isEmpty()) {
+            System.out.println("Venues retrieved: " + venues.size());  // Debug log
             ObservableList<Venue> venueObservableList = FXCollections.observableArrayList(venues);
             venueTable.setItems(venueObservableList);
         } else {

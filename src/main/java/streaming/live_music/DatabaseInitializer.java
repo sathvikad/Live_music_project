@@ -25,18 +25,17 @@ public class DatabaseInitializer {
      * Ensures the 'venues' table exists, creating it if necessary.
      */
     private static void initializeDatabase(Connection conn) {
-        String dropTableSQL = "DROP TABLE IF EXISTS venues";
-        String createTableSQL = "CREATE TABLE venues ("
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS venues ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "name TEXT NOT NULL, "
                 + "location TEXT NOT NULL, "
                 + "capacity INTEGER NOT NULL, "
                 + "eventType TEXT NOT NULL"
                 + ");";
+
         try (Statement stmt = conn.createStatement()) {
-            stmt.execute(dropTableSQL);  // Drop the old table (if it exists)
-            stmt.execute(createTableSQL);  // Create the new table
-            System.out.println("Database and table initialized successfully.");
+            stmt.execute(createTableSQL);  // Create the table if it doesn't exist
+            System.out.println("Database and table checked/initialized successfully.");
         } catch (SQLException e) {
             e.printStackTrace();
         }

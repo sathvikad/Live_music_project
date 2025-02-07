@@ -23,6 +23,11 @@ public class VenueDAO {
              PreparedStatement pstmt = conn.prepareStatement(query);
              ResultSet rs = pstmt.executeQuery()) {
 
+            if (conn == null) {
+                LOGGER.log(Level.SEVERE, "Connection to the database failed.");
+                return venues;
+            }
+
             while (rs.next()) {
                 Venue venue = new Venue(
                         rs.getString("name"),
@@ -36,6 +41,7 @@ public class VenueDAO {
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error retrieving venues from the database.", e);
         }
+
         return venues;
     }
 
@@ -50,6 +56,11 @@ public class VenueDAO {
 
         try (Connection conn = DatabaseInitializer.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            if (conn == null) {
+                LOGGER.log(Level.SEVERE, "Connection to the database failed.");
+                return false;
+            }
 
             pstmt.setString(1, venue.getName());
             pstmt.setString(2, venue.getLocation());

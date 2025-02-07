@@ -2,58 +2,58 @@ package streaming.live_music;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
-import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class RegisterController {
 
     @FXML
     private TextField usernameField;
-
     @FXML
     private PasswordField passwordField;
-
     @FXML
     private TextField firstNameField;
-
     @FXML
     private TextField lastNameField;
+    @FXML
+    private ComboBox<String> roleComboBox;
 
     @FXML
-    private CheckBox isManagerCheckbox;
+    public void initialize() {
+        roleComboBox.getItems().addAll("Manager", "Staff");
+        roleComboBox.setValue("Staff");  // Default selection
+    }
 
     @FXML
-    private void handleRegister(ActionEvent event) {
+    public void handleRegister(ActionEvent event) {
         String username = usernameField.getText().trim();
         String password = passwordField.getText().trim();
         String firstName = firstNameField.getText().trim();
         String lastName = lastNameField.getText().trim();
-        boolean isManager = isManagerCheckbox.isSelected();
+        String role = roleComboBox.getValue();
 
-        // Validate input fields
         if (username.isEmpty() || password.isEmpty() || firstName.isEmpty() || lastName.isEmpty()) {
-            showAlert("Invalid Input", "All fields are required. Please fill in the missing information.");
+            showAlert("Registration Error", "All fields must be filled.");
             return;
         }
 
-        // Try to add the user to the data store
-        if (DataStore.addUser(username, password, firstName, lastName, isManager)) {
-            showAlert("Registration Successful", "You have successfully registered.");
-            // Optionally switch back to login screen after successful registration
-            switchToLogin(event);
-        } else {
-            showAlert("Registration Failed", "Username already exists. Please choose another username.");
+        // Append user details to the file
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("users.txt", true))) {
+            writer.write(username + "," + password + "," + firstName + "," + lastName + "," + role);
+            writer.newLine();
+            showAlert("Success", "User registered successfully as " + role);
+        } catch (IOException e) {
+            showAlert("Error", "Failed to save user data.");
+            e.printStackTrace();
         }
-    }
 
-    @FXML
-    private void switchToLogin(ActionEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        SceneSwitcher.switchScene(stage, "/streaming/live_music/login.fxml");
+        clearFields();
     }
 
     private void showAlert(String title, String message) {
@@ -62,5 +62,13 @@ public class RegisterController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void clearFields() {
+        usernameField.clear();
+        passwordField.clear();
+        firstNameField.clear();
+        lastNameField.clear();
+        roleComboBox.setValue("Staff");
     }
 }

@@ -2,11 +2,9 @@ package streaming.live_music;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 public class JobRequestController {
 
@@ -64,8 +62,7 @@ public class JobRequestController {
 
     @FXML
     public void handleBackToMain(ActionEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        SceneSwitcher.switchScene(stage, "/streaming/live_music/managerDashboard.fxml");
+        SceneSwitcher.switchScene(event, "/streaming/live_music/managerDashboard.fxml");
     }
 
     private void showAlert(String title, String message) {

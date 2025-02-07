@@ -1,9 +1,9 @@
 package streaming.live_music;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -29,7 +29,6 @@ public class AutoMatchController {
         List<JobRequest> jobRequests = jobRequestDAO.getAllJobRequests();
         List<Venue> venues = venueDAO.getAllVenues();
 
-        // Check if there are any job requests or venues available
         if (jobRequests.isEmpty()) {
             LOGGER.log(Level.WARNING, "No job requests available to match.");
             showAlert("No Job Requests", "There are no job requests available to match.");
@@ -73,9 +72,6 @@ public class AutoMatchController {
         LOGGER.log(Level.INFO, "Venue matching process completed.");
     }
 
-    /**
-     * Checks if the venue meets the basic requirements of the job request.
-     */
     private boolean isVenueSuitable(Venue venue, JobRequest jobRequest) {
         boolean locationMatch = venue.getLocation().equalsIgnoreCase(jobRequest.getPreferredLocation());
         boolean capacityMatch = venue.getCapacity() >= jobRequest.getExpectedAttendees();
@@ -107,35 +103,35 @@ public class AutoMatchController {
     }
 
     private int calculateMatchScore(Venue venue, JobRequest jobRequest) {
-        int score = 50;  // Start with a base score of 50
+        int score = 50;
 
         if (venue.getLocation().equalsIgnoreCase(jobRequest.getPreferredLocation())) {
             score += 30;
         }
 
-        // Higher capacity matches better
         if (venue.getCapacity() >= jobRequest.getExpectedAttendees()) {
             score += 20;
         } else if (venue.getCapacity() >= jobRequest.getExpectedAttendees() / 2) {
-            score += 10;  // Partial credit for smaller venues
+            score += 10;
         }
 
-        // Event type similarity bonus
         if (venue.getEventType().toLowerCase().contains(jobRequest.getEventName().toLowerCase())) {
             score += 10;
         }
 
-        return Math.min(score, 100);  // Cap the score at 100%
+        return Math.min(score, 100);
     }
 
-    /**
-     * Shows an alert with a specified message.
-     */
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    @FXML
+    private void handleBack(ActionEvent event) {
+        SceneSwitcher.switchScene(event, "/streaming/live_music/managerDashboard.fxml");
     }
 }

@@ -2,18 +2,19 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="streaming.live_music.VenueListController" spacing="10" alignment="CENTER" style="-fx-padding: 20;">
+<VBox spacing="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="streaming.live_music.VenueListController" style="-fx-padding: 20;">
+    <Label text="Venue List" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
 
-    <Label text="Venue List" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+    <TextField fx:id="searchField" promptText="Search by Venue Name" onKeyReleased="#handleSearch" />
 
-    <TableView fx:id="venueTable" prefHeight="300" prefWidth="400">
+    <TableView fx:id="venueTable" prefHeight="300">
         <columns>
-            <TableColumn fx:id="nameColumn" text="Name" />
-            <TableColumn fx:id="locationColumn" text="Location" />
-            <TableColumn fx:id="capacityColumn" text="Capacity" />
+            <TableColumn fx:id="nameColumn" text="Name" prefWidth="150" />
+            <TableColumn fx:id="locationColumn" text="Location" prefWidth="150" />
+            <TableColumn fx:id="capacityColumn" text="Capacity" prefWidth="150" />
         </columns>
     </TableView>
 
-    <Button text="Back to Dashboard" onAction="#handleBack" style="-fx-background-color: #f44336; -fx-text-fill: white;" />
+    <Button text="Back to Dashboard" onAction="#handleBack" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" />
 </VBox>

@@ -1,12 +1,10 @@
 package streaming.live_music;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-import javafx.scene.Node;
-import javafx.event.ActionEvent;
 
 public class AddVenueController {
 
@@ -21,51 +19,41 @@ public class AddVenueController {
     @FXML
     private Label statusLabel;
 
-    private VenueDAO venueDAO = new VenueDAO();  // DAO for database operations
+    private final VenueDAO venueDAO = new VenueDAO();
 
     @FXML
     public void handleAddVenue() {
+        String name = nameField.getText().trim();
+        String location = locationField.getText().trim();
+        String eventType = eventTypeField.getText().trim();
+        String capacityText = capacityField.getText().trim();
+
+        if (name.isEmpty() || location.isEmpty() || capacityText.isEmpty() || eventType.isEmpty()) {
+            showAlert("Input Error", "All fields are required.");
+            return;
+        }
+
         try {
-            String name = nameField.getText().trim();
-            String location = locationField.getText().trim();
-            String eventType = eventTypeField.getText().trim();
-            String capacityText = capacityField.getText().trim();
-
-            if (name.isEmpty() || location.isEmpty() || capacityText.isEmpty() || eventType.isEmpty()) {
-                showAlert("Input Error", "All fields are required. Please fill out all fields.");
-                return;
-            }
-
-            int capacity;
-            try {
-                capacity = Integer.parseInt(capacityText);
-                if (capacity <= 0) {
-                    throw new NumberFormatException();
-                }
-            } catch (NumberFormatException e) {
-                showAlert("Input Error", "Capacity must be a positive number.");
-                return;
+            int capacity = Integer.parseInt(capacityText);
+            if (capacity <= 0) {
+                throw new NumberFormatException();
             }
 
             Venue newVenue = new Venue(name, location, capacity, eventType);
-
-            boolean success = venueDAO.addVenue(newVenue);
-            if (success) {
+            if (venueDAO.addVenue(newVenue)) {
                 statusLabel.setText("Venue added successfully.");
                 clearFields();
             } else {
-                showAlert("Database Error", "Failed to add venue to the database.");
+                showAlert("Database Error", "Failed to add venue.");
             }
-
-        } catch (Exception e) {
-            showAlert("Error", "An unexpected error occurred: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            showAlert("Input Error", "Capacity must be a positive number.");
         }
     }
 
     @FXML
     public void handleBack(ActionEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        SceneSwitcher.switchScene(stage, "/streaming/live_music/managerDashboard.fxml");
+        SceneSwitcher.switchScene(event, "/streaming/live_music/managerDashboard.fxml");
     }
 
     private void showAlert(String title, String message) {

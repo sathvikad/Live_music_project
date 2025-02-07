@@ -19,8 +19,8 @@ public class LoginController {
 
     @FXML
     private void handleLogin(ActionEvent event) {
-        String username = usernameField.getText();
-        String password = passwordField.getText();
+        String username = usernameField.getText().trim();
+        String password = passwordField.getText().trim();
 
         if (username.isEmpty() || password.isEmpty()) {
             showAlert("Login Error", "Please enter both username and password.");
@@ -29,11 +29,10 @@ public class LoginController {
 
         String role = validateCredentials(username, password);
         if (role != null) {
-            System.out.println("Login successful: " + username + " as " + role);
             showAlert("Success", "Login successful.");
-            if (role.equalsIgnoreCase("Manager")) {
+            if (role.equals("Manager")) {
                 SceneSwitcher.switchScene(event, "/streaming/live_music/managerDashboard.fxml");
-            } else if (role.equalsIgnoreCase("Staff")) {
+            } else {
                 SceneSwitcher.switchScene(event, "/streaming/live_music/staffDashboard.fxml");
             }
         } else {
@@ -45,8 +44,10 @@ public class LoginController {
         try (Scanner scanner = new Scanner(new File("users.txt"))) {
             while (scanner.hasNextLine()) {
                 String[] userDetails = scanner.nextLine().split(",");
-                if (userDetails[0].equals(username) && userDetails[1].equals(password)) {
-                    return userDetails[4];
+
+                // Ensure the correct number of columns and validate
+                if (userDetails.length == 5 && userDetails[0].equals(username) && userDetails[1].equals(password)) {
+                    return userDetails[4];  // Return the role (Manager or Staff)
                 }
             }
         } catch (IOException e) {

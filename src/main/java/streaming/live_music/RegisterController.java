@@ -48,12 +48,19 @@ public class RegisterController {
             writer.write(username + "," + password + "," + firstName + "," + lastName + "," + role);
             writer.newLine();
             showAlert("Success", "User registered successfully as " + role);
+            SceneSwitcher.switchScene(event, "/streaming/live_music/login.fxml");  // Redirect after success
         } catch (IOException e) {
             showAlert("Error", "Failed to save user data.");
             e.printStackTrace();
         }
 
         clearFields();
+    }
+
+    @FXML
+    public void handleBackToLogin(ActionEvent event) {
+        // Switch back to login scene
+        SceneSwitcher.switchScene(event, "/streaming/live_music/login.fxml");
     }
 
     private void showAlert(String title, String message) {

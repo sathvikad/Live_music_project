@@ -34,7 +34,7 @@ public class VenueDAO {
             }
 
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Error retrieving venues from database", e);
+            LOGGER.log(Level.SEVERE, "Error retrieving venues from the database.", e);
         }
         return venues;
     }
@@ -57,10 +57,12 @@ public class VenueDAO {
             pstmt.setString(4, venue.getEventType());
 
             int affectedRows = pstmt.executeUpdate();
-            return affectedRows > 0;
-
+            if (affectedRows > 0) {
+                LOGGER.log(Level.INFO, "Venue added successfully: {0}", venue.getName());
+                return true;
+            }
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Error inserting venue into database", e);
+            LOGGER.log(Level.SEVERE, "Error inserting venue into the database.", e);
         }
         return false;
     }

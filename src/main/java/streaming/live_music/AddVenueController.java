@@ -31,13 +31,11 @@ public class AddVenueController {
             String eventType = eventTypeField.getText().trim();
             String capacityText = capacityField.getText().trim();
 
-            // Validate input fields
             if (name.isEmpty() || location.isEmpty() || capacityText.isEmpty() || eventType.isEmpty()) {
                 showAlert("Input Error", "All fields are required. Please fill out all fields.");
                 return;
             }
 
-            // Validate capacity
             int capacity;
             try {
                 capacity = Integer.parseInt(capacityText);
@@ -51,11 +49,10 @@ public class AddVenueController {
 
             Venue newVenue = new Venue(name, location, capacity, eventType);
 
-            // Add venue to database using VenueDAO
             boolean success = venueDAO.addVenue(newVenue);
             if (success) {
                 statusLabel.setText("Venue added successfully.");
-                clearFields();  // Clear fields after successful addition
+                clearFields();
             } else {
                 showAlert("Database Error", "Failed to add venue to the database.");
             }

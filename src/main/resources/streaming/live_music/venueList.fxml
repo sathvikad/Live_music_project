@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<VBox spacing="10" alignment="CENTER" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="streaming.live_music.VenueListController" style="-fx-padding: 20;">
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="streaming.live_music.VenueListController" spacing="10" alignment="CENTER" style="-fx-padding: 20;">
 
     <Label text="Venue List" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
 
-    <!-- Back Button -->
-    <Button text="Back to Dashboard" onAction="#handleBack" style="-fx-background-color: #f44336; -fx-text-fill: white;" />
-
-    <!-- TableView for Venues -->
-    <TableView fx:id="venueTable" prefHeight="300">
+    <TableView fx:id="venueTable" prefHeight="300" prefWidth="400">
         <columns>
             <TableColumn fx:id="nameColumn" text="Name" />
             <TableColumn fx:id="locationColumn" text="Location" />
             <TableColumn fx:id="capacityColumn" text="Capacity" />
         </columns>
     </TableView>
+
+    <Button text="Back to Dashboard" onAction="#handleBack" style="-fx-background-color: #f44336; -fx-text-fill: white;" />
 </VBox>

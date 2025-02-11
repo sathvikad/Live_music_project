@@ -1,21 +1,28 @@
 package streaming.live_music;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class HelloApplication extends Application {
 
     @Override
-    public void start(Stage primaryStage) {
-        SceneSwitcher.setStage(primaryStage);
-        SceneSwitcher.switchScene("/streaming/live_music/login.fxml");
+    public void start(Stage stage) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/streaming/live_music/login.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setTitle("Live Music Venue Matchmaker");
+        stage.setScene(scene);
+        stage.show();
     }
 
     public static void main(String[] args) {
-        DatabaseInitializer.initialize();  // Initialize database tables
-        CSVImporter.importVenues();        // Import CSV data into venues table
-        CSVImporter.importRequests();      // Import CSV data into requests table
-        DataChecker.checkImportedData();   // Verify the data import
-        launch();                          // Start the application
+        // Initialize the database before launching the application
+        DatabaseInitializer.initializeDatabase();
+
+        // Start JavaFX application
+        launch();
     }
 }

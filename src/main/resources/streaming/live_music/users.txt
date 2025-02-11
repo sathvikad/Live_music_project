@@ -12,3 +12,7 @@ Maple,Maple,Maple,Maple,Manager
 Star,Satr,Maple,Star,Staff
 Star,Star,Star,Star,Staff
 STAR,STAR,STAR,STAR,Staff
+Sushma,Bushan,Sushma,Bushan,Manager
+Sushma,Bushan,Sushma,Bushan,Staff
+sathvika,sathvika,Sathvika,sathvika,Staff
+sathvika,sathvika,Sathvika,sathvika,Manager

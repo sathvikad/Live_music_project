@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.VBox?>
+
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" spacing="15" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="streaming.live_music.ManagerDashboardController" style="-fx-padding: 20; -fx-background-color: #f4f4f4;">
+<AnchorPane prefWidth="600" prefHeight="400" xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="streaming.live_music.ManagerDashboardController">
 
-    <!-- Title Label -->
-    <Label text="Manager Dashboard" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+    <Text text="Manager Dashboard" layoutX="220" layoutY="50" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
 
-    <!-- Buttons for different actions -->
-    <Button text="View Venues" onAction="#handleViewVenues" prefWidth="200" style="-fx-font-size: 14px;" />
-    <Button text="Add Venue" onAction="#handleAddVenue" prefWidth="200" style="-fx-font-size: 14px;" />
-    <Button text="Job Requests" onAction="#handleJobRequests" prefWidth="200" style="-fx-font-size: 14px;" />
-    <Button text="Auto Match" onAction="#handleAutoMatch" prefWidth="200" style="-fx-font-size: 14px;" />
-    <Button text="Logout" onAction="#handleLogout" prefWidth="200" style="-fx-background-color: #ff4c4c; -fx-text-fill: white; -fx-font-size: 14px;" />
-</VBox>
+    <Button text="View Venues" layoutX="200" layoutY="100" prefWidth="200" fx:id="viewVenuesButton" onAction="#handleViewVenues"/>
+    <Button text="Job Requests" layoutX="200" layoutY="150" prefWidth="200" fx:id="jobRequestsButton" onAction="#handleJobRequests"/>
+    <Button text="Add Venue" layoutX="200" layoutY="200" prefWidth="200" fx:id="addVenueButton" onAction="#handleAddVenue"/>
+    <Button text="Venue Utilization" layoutX="200" layoutY="250" prefWidth="200" fx:id="venueUtilizationButton" onAction="#handleVenueUtilization"/>
+
+</AnchorPane>

@@ -18,15 +18,21 @@ public class DatabaseInitializer {
         }
     }
 
-    public static void initialize() {
+    // Method to initialize the database
+    public static void initializeDatabase() {
         try (Connection conn = getConnection(); Statement stmt = conn.createStatement()) {
-            stmt.execute("DROP TABLE IF EXISTS venues");
-            stmt.execute("CREATE TABLE IF NOT EXISTS venues ("
-                    + "name TEXT, "
-                    + "capacity INTEGER, "
-                    + "suitable_for TEXT, "
-                    + "category TEXT"
-                    + ")");
+            if (conn != null) {
+                // Create Venues Table
+                String createVenuesTable = "CREATE TABLE IF NOT EXISTS venues ("
+                        + "name TEXT PRIMARY KEY, "
+                        + "capacity INTEGER, "
+                        + "suitable_for TEXT, "
+                        + "category TEXT, "
+                        + "booking_price REAL)";
+                stmt.execute(createVenuesTable);
+
+                System.out.println("Database initialized successfully.");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

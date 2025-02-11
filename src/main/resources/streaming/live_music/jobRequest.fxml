@@ -10,9 +10,10 @@
     <TableView fx:id="jobRequestTable" prefHeight="300">
         <columns>
             <TableColumn fx:id="eventNameColumn" text="Event Name" prefWidth="150" />
-            <TableColumn fx:id="eventDateColumn" text="Event Date" prefWidth="150" />
             <TableColumn fx:id="clientColumn" text="Client" prefWidth="150" />
+            <TableColumn fx:id="eventDateColumn" text="Event Date" prefWidth="150" />
             <TableColumn fx:id="expectedAttendanceColumn" text="Attendance" prefWidth="100" />
+            <TableColumn fx:id="eventTypeColumn" text="Event Type" prefWidth="100" />
         </columns>
     </TableView>
 

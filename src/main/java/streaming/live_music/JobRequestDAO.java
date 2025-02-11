@@ -12,8 +12,8 @@ public class JobRequestDAO {
         jobRequestList = new ArrayList<>();
 
         // Adding initial job requests (for testing; you can allow users to add more via GUI)
-        jobRequestList.add(new JobRequest("Event A", "2025-02-15", "Client A", 100));
-        jobRequestList.add(new JobRequest("Event B", "2025-03-10", "Client B", 150));
+        jobRequestList.add(new JobRequest("Event A", "2025-02-15", "Client A", 100, "Concert"));
+        jobRequestList.add(new JobRequest("Event B", "2025-03-10", "Client B", 150, "Festival"));
     }
 
     public List<JobRequest> getAllJobRequests() {

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefWidth="600" prefHeight="400" xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="streaming.live_music.VenueUtilizationController">
+
+    <BarChart fx:id="venueUtilizationChart" layoutX="50" layoutY="50" prefWidth="500" prefHeight="300">
+        <xAxis>
+            <CategoryAxis label="Venue"/>
+        </xAxis>
+        <yAxis>
+            <NumberAxis label="Utilization"/>
+        </yAxis>
+    </BarChart>
+
+    <Button text="Back to Dashboard" layoutX="50" layoutY="360" fx:id="backButton" onAction="#handleBackToDashboard"/>
+</AnchorPane>

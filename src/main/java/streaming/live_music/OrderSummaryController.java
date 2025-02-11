@@ -1,20 +1,12 @@
 package streaming.live_music;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
+import javafx.event.ActionEvent;
 
 public class OrderSummaryController {
 
     @FXML
-    private void handleBackToDashboard() {
-        SceneSwitcher.switchScene("/streaming/live_music/managerDashboard.fxml");
-    }
-
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+    private void handleBack(ActionEvent event) {
+        SceneSwitcher.switchScene((javafx.scene.Node) event.getSource(), "ManagerDashboard.fxml");
     }
 }

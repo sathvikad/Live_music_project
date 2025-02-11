@@ -1,72 +1,79 @@
 package streaming.live_music;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 public class AddVenueController {
 
     @FXML
-    private TextField nameField;
+    private TextField venueNameField;
     @FXML
     private TextField capacityField;
     @FXML
     private TextField suitableForField;
     @FXML
     private TextField categoryField;
-
-    private final VenueDAO venueDAO = new VenueDAO(DatabaseInitializer.getConnection());
+    @FXML
+    private TextField bookingPriceField;
+    @FXML
+    private Button submitButton;
+    @FXML
+    private Button backButton;
 
     @FXML
-    private void handleAddVenue(ActionEvent event) {
+    private void handleAddVenue() {
         try {
-            // Trim inputs and validate
-            String name = nameField.getText().trim();
+            System.out.println("Attempting to add venue...");
+
+            String name = venueNameField.getText().trim();
+            int capacity = Integer.parseInt(capacityField.getText().trim());
             String suitableFor = suitableForField.getText().trim();
             String category = categoryField.getText().trim();
-            String capacityText = capacityField.getText().trim();
+            double bookingPrice = Double.parseDouble(bookingPriceField.getText().trim());
 
-            if (name.isEmpty() || suitableFor.isEmpty() || category.isEmpty() || capacityText.isEmpty()) {
-                showAlert("Invalid input", "All fields must be filled.");
-                return;
+            System.out.println("Venue Name: " + name);
+            System.out.println("Capacity: " + capacity);
+            System.out.println("Suitable For: " + suitableFor);
+            System.out.println("Category: " + category);
+            System.out.println("Booking Price: " + bookingPrice);
+
+            Venue newVenue = new Venue(name, capacity, suitableFor, category, bookingPrice);
+            boolean isInserted = VenueDAO.addVenue(newVenue);
+
+            if (isInserted) {
+                showAlert("Success", "Venue added successfully!");
+                clearFields();
+            } else {
+                showAlert("Error", "Failed to add venue.");
             }
-
-            int capacity;
-            try {
-                capacity = Integer.parseInt(capacityText);
-                if (capacity <= 0) {
-                    showAlert("Invalid Capacity", "Capacity must be a positive number.");
-                    return;
-                }
-            } catch (NumberFormatException e) {
-                showAlert("Invalid Capacity", "Please enter a valid numeric value for capacity.");
-                return;
-            }
-
-            // Insert the new venue into the database
-            Venue venue = new Venue(name, capacity, suitableFor, category);
-            venueDAO.addVenue(venue);
-
-            // Switch to the venue list scene and reload the data
-            SceneSwitcher.switchScene("venueList.fxml");
-
+        } catch (NumberFormatException e) {
+            showAlert("Error", "Invalid input. Please enter valid numbers for capacity and booking price.");
         } catch (Exception e) {
-            showAlert("Error", "An unexpected error occurred while adding the venue.");
             e.printStackTrace();
+            showAlert("Error", "An unexpected error occurred.");
         }
     }
 
-    @FXML
-    private void handleBackToDashboard(ActionEvent event) {
-        SceneSwitcher.switchScene("managerDashboard.fxml");
-    }
-
     private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(title);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void clearFields() {
+        venueNameField.clear();
+        capacityField.clear();
+        suitableForField.clear();
+        categoryField.clear();
+        bookingPriceField.clear();
+    }
+
+    @FXML
+    private void handleBackToDashboard() {
+        SceneSwitcher.switchScene(backButton, "ManagerDashboard.fxml");
     }
 }

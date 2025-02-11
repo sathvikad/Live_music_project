@@ -1,11 +1,16 @@
 package streaming.live_music;
 
 import javafx.fxml.FXML;
+import javafx.scene.chart.BarChart;
 import javafx.event.ActionEvent;
 
-public class HelloController {
+public class VenueUtilizationController {
+
     @FXML
-    private void handleGoToDashboard(ActionEvent event) {
+    private BarChart<?, ?> venueUtilizationChart;
+
+    @FXML
+    private void handleBackToDashboard(ActionEvent event) {
         SceneSwitcher.switchScene((javafx.scene.Node) event.getSource(), "ManagerDashboard.fxml");
     }
 }

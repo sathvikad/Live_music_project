@@ -5,14 +5,17 @@ public class JobRequest {
     private String eventDate;
     private String clientName;
     private int expectedAttendance;
+    private String eventType;  // New field for the event type or category
 
-    public JobRequest(String eventName, String eventDate, String clientName, int expectedAttendance) {
+    public JobRequest(String eventName, String eventDate, String clientName, int expectedAttendance, String eventType) {
         this.eventName = eventName;
         this.eventDate = eventDate;
         this.clientName = clientName;
         this.expectedAttendance = expectedAttendance;
+        this.eventType = eventType;
     }
 
+    // Getters and Setters
     public String getEventName() {
         return eventName;
     }
@@ -43,5 +46,13 @@ public class JobRequest {
 
     public void setExpectedAttendance(int expectedAttendance) {
         this.expectedAttendance = expectedAttendance;
+    }
+
+    public String getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(String eventType) {
+        this.eventType = eventType;
     }
 }

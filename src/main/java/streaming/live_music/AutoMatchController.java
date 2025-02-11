@@ -1,82 +1,97 @@
 package streaming.live_music;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Alert;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AutoMatchController {
 
-    @FXML
-    private TableView<MatchedRequest> matchedRequestTable;
-    @FXML
-    private TableColumn<MatchedRequest, String> eventNameColumn;
-    @FXML
-    private TableColumn<MatchedRequest, String> venueNameColumn;
-    @FXML
-    private TableColumn<MatchedRequest, String> statusColumn;
+    private static final Logger LOGGER = Logger.getLogger(AutoMatchController.class.getName());
+    private Connection conn;
 
-    private Connection conn = DatabaseInitializer.getConnection();
-
-    @FXML
-    public void initialize() {
-        eventNameColumn.setCellValueFactory(new PropertyValueFactory<>("eventName"));
-        venueNameColumn.setCellValueFactory(new PropertyValueFactory<>("venueName"));
-        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-
-        ObservableList<MatchedRequest> matchedRequests = FXCollections.observableArrayList(autoMatch());
-        matchedRequestTable.setItems(matchedRequests);
+    // No-argument constructor required by JavaFX
+    public AutoMatchController() {
+        this.conn = DatabaseInitializer.getConnection();
     }
 
-    private List<MatchedRequest> autoMatch() {
-        List<MatchedRequest> matchedList = new ArrayList<>();
-        try {
-            Statement stmt = conn.createStatement();
+    public AutoMatchController(Connection connection) {
+        this.conn = connection;
+    }
 
-            // Get all requests
-            String requestQuery = "SELECT * FROM requests";
-            ResultSet requestSet = stmt.executeQuery(requestQuery);
+    @FXML
+    private void handleAutoMatch() {
+        if (conn == null) {
+            showAlert("Database Connection Error", "Unable to establish a database connection.");
+            LOGGER.log(Level.SEVERE, "Database connection is null. Aborting auto-match.");
+            return;
+        }
 
-            while (requestSet.next()) {
-                String eventName = requestSet.getString("eventName");
-                int expectedAttendance = requestSet.getInt("expectedAttendance");
-                String eventType = requestSet.getString("eventType");
-                String eventDate = requestSet.getString("eventDate");
+        LOGGER.info("Starting auto-match...");
+        autoMatchEventsToVenues();
+        showAlert("Auto-Match Completed", "Auto-matching of events to venues is complete. Check the logs for results.");
+    }
 
-                // Find venues matching the request
-                String venueQuery = "SELECT * FROM venues WHERE capacity >= ? AND eventType = ? AND availability = 1";
-                try (PreparedStatement venueStmt = conn.prepareStatement(venueQuery)) {
-                    venueStmt.setInt(1, expectedAttendance);
-                    venueStmt.setString(2, eventType);
+    public void autoMatchEventsToVenues() {
+        String query = "SELECT * FROM requests";
+        try (PreparedStatement statement = conn.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
 
-                    ResultSet venueSet = venueStmt.executeQuery();
-                    boolean matchFound = false;
+            boolean matched = false;
+            while (resultSet.next()) {
+                String eventTitle = resultSet.getString("title");
+                String eventType = resultSet.getString("type");
+                int audienceSize = resultSet.getInt("targetAudience");
 
-                    while (venueSet.next()) {
-                        String venueName = venueSet.getString("name");
-                        matchFound = true;
-                        matchedList.add(new MatchedRequest(eventName, venueName, "Matched"));
-                    }
-
-                    if (!matchFound) {
-                        matchedList.add(new MatchedRequest(eventName, "No Match", "No suitable venue found"));
-                    }
+                boolean isMatched = matchEventWithVenue(eventTitle, eventType, audienceSize);
+                if (isMatched) {
+                    matched = true;
                 }
             }
+
+            if (!matched) {
+                LOGGER.warning("No events were successfully matched to venues.");
+            }
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error while auto-matching events to venues", e);
         }
-        return matchedList;
     }
 
-    @FXML
-    private void handleBack() {
-        SceneSwitcher.switchScene("/streaming/live_music/managerDashboard.fxml");
+    private boolean matchEventWithVenue(String eventTitle, String eventType, int audienceSize) {
+        String venueQuery = "SELECT * FROM venues WHERE suitable_for LIKE ? AND capacity >= ? ORDER BY capacity ASC LIMIT 1";
+
+        try (PreparedStatement statement = conn.prepareStatement(venueQuery)) {
+            statement.setString(1, "%" + eventType + "%");
+            statement.setInt(2, audienceSize);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    String venueName = resultSet.getString("name");
+                    LOGGER.log(Level.INFO, "Event '{0}' matched with venue '{1}'", new Object[]{eventTitle, venueName});
+                    return true;
+                } else {
+                    LOGGER.log(Level.WARNING, "No suitable venue found for event '{0}'", eventTitle);
+                }
+            }
+
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error during venue matching for event: " + eventTitle, e);
+        }
+
+        return false;
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

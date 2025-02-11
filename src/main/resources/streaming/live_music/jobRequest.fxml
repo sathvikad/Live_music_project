@@ -4,6 +4,7 @@
 
 <VBox spacing="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="streaming.live_music.JobRequestController" style="-fx-padding: 20;">
+
     <Label text="Job Requests" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
 
     <TableView fx:id="jobRequestTable" prefHeight="300">
@@ -15,5 +16,6 @@
         </columns>
     </TableView>
 
-    <Button text="Back to Dashboard" onAction="#handleBackToMainMenu" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" />
+    <Button text="Back to Dashboard" onAction="#handleBackToMainMenu"
+            style="-fx-background-color: #e74c3c; -fx-text-fill: white;" />
 </VBox>

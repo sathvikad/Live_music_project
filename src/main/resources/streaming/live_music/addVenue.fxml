@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
+<?import javafx.scene.layout.VBox?>
 <VBox spacing="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="streaming.live_music.AddVenueController" style="-fx-padding: 20;">
     <Label text="Add Venue" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
 
-    <TextField fx:id="venueNameField" promptText="Venue Name" />
-    <TextField fx:id="venueLocationField" promptText="Location" />
-    <TextField fx:id="venueCapacityField" promptText="Capacity" />
+    <TextField fx:id="nameField" promptText="Venue Name" />
+    <TextField fx:id="capacityField" promptText="Capacity" />
+    <TextField fx:id="suitableForField" promptText="Suitable For (e.g., gig, festival)" />
+    <TextField fx:id="categoryField" promptText="Category (Indoor, Outdoor, etc.)" />
 
-    <Button text="Add Venue" onAction="#handleAddVenue" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" />
-    <Button text="Back to Dashboard" onAction="#handleBack" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" />
+    <Button text="Add Venue" onAction="#handleAddVenue" style="-fx-background-color: #27ae60; -fx-text-fill: white;" />
+    <Button text="Back to Dashboard" onAction="#handleBackToDashboard" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" />
 </VBox>

@@ -4,13 +4,15 @@
 <?import javafx.scene.control.Label?>
 
 <VBox alignment="CENTER" spacing="15" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="streaming.live_music.ManagerDashboardController" style="-fx-padding: 20;">
+      fx:controller="streaming.live_music.ManagerDashboardController" style="-fx-padding: 20; -fx-background-color: #f4f4f4;">
 
-    <Label text="Manager Dashboard" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+    <!-- Title Label -->
+    <Label text="Manager Dashboard" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
 
-    <Button text="View Venues" onAction="#handleViewVenues" />
-    <Button text="Add Venue" onAction="#handleAddVenue" />
-    <Button text="Job Requests" onAction="#handleJobRequests" />
-    <Button text="Auto Match" onAction="#handleAutoMatch" />
-    <Button text="Logout" onAction="#handleLogout" />
+    <!-- Buttons for different actions -->
+    <Button text="View Venues" onAction="#handleViewVenues" prefWidth="200" style="-fx-font-size: 14px;" />
+    <Button text="Add Venue" onAction="#handleAddVenue" prefWidth="200" style="-fx-font-size: 14px;" />
+    <Button text="Job Requests" onAction="#handleJobRequests" prefWidth="200" style="-fx-font-size: 14px;" />
+    <Button text="Auto Match" onAction="#handleAutoMatch" prefWidth="200" style="-fx-font-size: 14px;" />
+    <Button text="Logout" onAction="#handleLogout" prefWidth="200" style="-fx-background-color: #ff4c4c; -fx-text-fill: white; -fx-font-size: 14px;" />
 </VBox>

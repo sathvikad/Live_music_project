@@ -1,24 +1,16 @@
 package streaming.live_music;
 
 public class JobRequest {
-    private String clientName;
     private String eventName;
     private String eventDate;
+    private String clientName;
     private int expectedAttendance;
 
-    public JobRequest(String clientName, String eventName, String eventDate, int expectedAttendance) {
-        this.clientName = clientName;
+    public JobRequest(String eventName, String eventDate, String clientName, int expectedAttendance) {
         this.eventName = eventName;
         this.eventDate = eventDate;
-        this.expectedAttendance = expectedAttendance;
-    }
-
-    public String getClientName() {
-        return clientName;
-    }
-
-    public void setClientName(String clientName) {
         this.clientName = clientName;
+        this.expectedAttendance = expectedAttendance;
     }
 
     public String getEventName() {
@@ -35,6 +27,14 @@ public class JobRequest {
 
     public void setEventDate(String eventDate) {
         this.eventDate = eventDate;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
 
     public int getExpectedAttendance() {

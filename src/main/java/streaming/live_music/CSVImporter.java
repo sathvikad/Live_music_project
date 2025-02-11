@@ -13,35 +13,24 @@ public class CSVImporter {
     private static final String REQUEST_CSV_FILE = "src/main/resources/streaming/live_music/requests.csv";
 
     public static void importVenues() {
+        String insertSQL = "INSERT INTO venues (name, capacity, suitable_for, category) VALUES (?, ?, ?, ?)";
         try (Connection conn = DatabaseInitializer.getConnection();
-             BufferedReader reader = new BufferedReader(new FileReader(VENUE_CSV_FILE))) {
+             BufferedReader reader = new BufferedReader(new FileReader(VENUE_CSV_FILE));
+             PreparedStatement stmt = conn.prepareStatement(insertSQL)) {
 
-            String line;
-            reader.readLine(); // Skip the header
-
+            String line = reader.readLine(); // Skip header
             while ((line = reader.readLine()) != null) {
                 String[] data = line.split(",");
-
                 if (data.length < 4) {
-                    System.err.println("Invalid venue data (incorrect columns): " + line);
+                    System.err.println("Invalid venue data: " + line);
                     continue;
                 }
 
-                String name = data[0].trim();
-                String location = "Melbourne";  // Default location
-                int capacity = Integer.parseInt(data[1].trim());
-                String category = data[3].trim();
-                String eventType = data[2].trim().split(";")[0].trim();  // Take the first event type
-
-                String insertSQL = "INSERT INTO venues (name, location, capacity, category, eventType) VALUES (?, ?, ?, ?, ?)";
-                try (PreparedStatement stmt = conn.prepareStatement(insertSQL)) {
-                    stmt.setString(1, name);
-                    stmt.setString(2, location);
-                    stmt.setInt(3, capacity);
-                    stmt.setString(4, category);
-                    stmt.setString(5, eventType);
-                    stmt.executeUpdate();
-                }
+                stmt.setString(1, data[0].trim());
+                stmt.setInt(2, Integer.parseInt(data[1].trim()));
+                stmt.setString(3, data[2].trim());
+                stmt.setString(4, data[3].trim());
+                stmt.executeUpdate();
             }
             System.out.println("Venues imported successfully.");
         } catch (IOException | SQLException e) {
@@ -50,53 +39,32 @@ public class CSVImporter {
     }
 
     public static void importRequests() {
+        String insertSQL = "INSERT INTO requests (client, title, artist, date, time, targetAudience, type, category) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseInitializer.getConnection();
-             BufferedReader reader = new BufferedReader(new FileReader(REQUEST_CSV_FILE))) {
+             BufferedReader reader = new BufferedReader(new FileReader(REQUEST_CSV_FILE));
+             PreparedStatement stmt = conn.prepareStatement(insertSQL)) {
 
-            String line;
-            reader.readLine(); // Skip the header
-
+            String line = reader.readLine(); // Skip header
             while ((line = reader.readLine()) != null) {
                 String[] data = line.split(",");
-
-                if (data.length < 7) {
-                    System.err.println("Invalid request data (incorrect columns): " + line);
+                if (data.length < 8) {
+                    System.err.println("Invalid request data: " + line);
                     continue;
                 }
 
-                String clientName = data[0].trim();
-                String eventName = data[1].trim();
-                String eventDate = formatDate(data[3].trim());
-                String eventTime = data[4].trim();
-                int expectedAttendance = Integer.parseInt(data[5].trim());
-                String eventType = data[6].trim();
-
-                // Combine event date and time
-                String eventDateTime = eventDate + " " + eventTime;
-
-                String insertSQL = "INSERT INTO requests (clientName, eventName, eventDateTime, expectedAttendance, eventType) VALUES (?, ?, ?, ?, ?)";
-                try (PreparedStatement stmt = conn.prepareStatement(insertSQL)) {
-                    stmt.setString(1, clientName);
-                    stmt.setString(2, eventName);
-                    stmt.setString(3, eventDateTime);
-                    stmt.setInt(4, expectedAttendance);
-                    stmt.setString(5, eventType);
-                    stmt.executeUpdate();
-                }
+                stmt.setString(1, data[0].trim());
+                stmt.setString(2, data[1].trim());
+                stmt.setString(3, data[2].trim());
+                stmt.setString(4, data[3].trim());
+                stmt.setString(5, data[4].trim());
+                stmt.setInt(6, Integer.parseInt(data[5].trim()));
+                stmt.setString(7, data[6].trim());
+                stmt.setString(8, data[7].trim());
+                stmt.executeUpdate();
             }
             System.out.println("Requests imported successfully.");
         } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    // Utility function to format date
-    private static String formatDate(String date) {
-        // Convert "DD-MM-YY" to "YYYY-MM-DD"
-        if (date.matches("\\d{2}-\\d{2}-\\d{2}")) {
-            String[] parts = date.split("-");
-            return "20" + parts[2] + "-" + parts[1] + "-" + parts[0];
-        }
-        return date;  // Return as-is if already in the correct format
     }
 }

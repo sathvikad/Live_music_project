@@ -15,14 +15,9 @@ public class SceneSwitcher {
         primaryStage = stage;
     }
 
-    public static void switchScene(String fxmlPath) {
+    public static void switchScene(String fxmlFile) {
         try {
-            if (primaryStage == null) {
-                System.err.println("Error: Primary stage is not set.");
-                return;
-            }
-
-            FXMLLoader loader = new FXMLLoader(SceneSwitcher.class.getResource(fxmlPath));
+            FXMLLoader loader = new FXMLLoader(SceneSwitcher.class.getResource(fxmlFile));
             Parent root = loader.load();
             primaryStage.setScene(new Scene(root));
             primaryStage.show();

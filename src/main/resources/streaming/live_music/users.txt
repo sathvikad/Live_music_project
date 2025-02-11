@@ -9,3 +9,6 @@ Adam,Adam,Adam,Eve,Staff
 Sathvika,Sathvika,Sathvika,Danthamala,StaffMaple,Mpale,Maple,Maple,Manager
 Sathvika,Sathvika,Sathvika,Danthamala,Staff
 Maple,Maple,Maple,Maple,Manager
+Star,Satr,Maple,Star,Staff
+Star,Star,Star,Star,Staff
+STAR,STAR,STAR,STAR,Staff

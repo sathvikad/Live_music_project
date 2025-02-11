@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 
 public class ManagerDashboardController {
+
     @FXML
     private void handleViewVenues(ActionEvent event) {
         SceneSwitcher.switchScene((javafx.scene.Node) event.getSource(), "VenueList.fxml");
@@ -11,7 +12,7 @@ public class ManagerDashboardController {
 
     @FXML
     private void handleJobRequests(ActionEvent event) {
-        SceneSwitcher.switchScene((javafx.scene.Node) event.getSource(), "JobRequests.fxml");
+        SceneSwitcher.switchScene((javafx.scene.Node) event.getSource(), "JobRequest.fxml");
     }
 
     @FXML
@@ -22,5 +23,10 @@ public class ManagerDashboardController {
     @FXML
     private void handleVenueUtilization(ActionEvent event) {
         SceneSwitcher.switchScene((javafx.scene.Node) event.getSource(), "VenueUtilization.fxml");
+    }
+
+    @FXML
+    private void handleAutoMatch(ActionEvent event) {
+        SceneSwitcher.switchScene((javafx.scene.Node) event.getSource(), "AutoMatch.fxml");
     }
 }

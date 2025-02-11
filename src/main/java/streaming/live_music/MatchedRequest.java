@@ -15,23 +15,16 @@ public class MatchedRequest {
         return eventName;
     }
 
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
-    }
-
     public String getVenueName() {
         return venueName;
-    }
-
-    public void setVenueName(String venueName) {
-        this.venueName = venueName;
     }
 
     public String getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    @Override
+    public String toString() {
+        return "Event: " + eventName + " | Venue: " + venueName + " | Status: " + status;
     }
 }

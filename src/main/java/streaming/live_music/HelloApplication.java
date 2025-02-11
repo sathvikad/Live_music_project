@@ -19,10 +19,31 @@ public class HelloApplication extends Application {
     }
 
     public static void main(String[] args) {
-        // Initialize the database before launching the application
+        // Step 1: Initialize database (Ensures tables exist)
         DatabaseInitializer.initializeDatabase();
 
-        // Start JavaFX application
+        // Step 2: Import CSV Data (Venues & Job Requests)
+        importCSVData();
+
+        // Step 3: Launch JavaFX Application
         launch();
+    }
+
+    private static void importCSVData() {
+        try {
+            // Import Venues
+            String venuesCSVPath = "src/main/resources/streaming/live_music/venues.csv";
+            CSVImporter.importVenues(venuesCSVPath);
+            System.out.println("Venues imported successfully.");
+
+            // Import Job Requests
+            String jobRequestsCSVPath = "src/main/resources/streaming/live_music/requests.csv";
+            CSVImporter.importJobRequests(jobRequestsCSVPath);
+            System.out.println("Job requests imported successfully.");
+
+        } catch (Exception e) {
+            System.err.println("Error importing CSV files!");
+            e.printStackTrace();
+        }
     }
 }

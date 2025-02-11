@@ -18,11 +18,14 @@ public class DatabaseInitializer {
         }
     }
 
-    // Method to initialize the database
     public static void initializeDatabase() {
         try (Connection conn = getConnection(); Statement stmt = conn.createStatement()) {
             if (conn != null) {
-                // Create Venues Table
+                // Drop existing tables to remove duplicates
+                stmt.execute("DROP TABLE IF EXISTS venues");
+                stmt.execute("DROP TABLE IF EXISTS job_requests");
+
+                // Create venues table
                 String createVenuesTable = "CREATE TABLE IF NOT EXISTS venues ("
                         + "name TEXT PRIMARY KEY, "
                         + "capacity INTEGER, "
@@ -31,7 +34,21 @@ public class DatabaseInitializer {
                         + "booking_price REAL)";
                 stmt.execute(createVenuesTable);
 
-                System.out.println("Database initialized successfully.");
+                // Create job requests table with correct schema
+                String createJobRequestsTable = "CREATE TABLE IF NOT EXISTS job_requests ("
+                        + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                        + "client TEXT, "
+                        + "title TEXT, "
+                        + "artist TEXT, "
+                        + "date TEXT, "
+                        + "time TEXT, "
+                        + "duration INTEGER, "
+                        + "target_audience INTEGER, "
+                        + "type TEXT, "
+                        + "category TEXT)";
+                stmt.execute(createJobRequestsTable);
+
+                System.out.println("Database initialized successfully (Duplicates removed).");
             }
         } catch (SQLException e) {
             e.printStackTrace();

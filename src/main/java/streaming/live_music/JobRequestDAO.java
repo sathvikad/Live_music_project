@@ -1,27 +1,59 @@
 package streaming.live_music;
 
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class JobRequestDAO {
-    private static final Logger LOGGER = Logger.getLogger(JobRequestDAO.class.getName());
-    private final List<JobRequest> jobRequestList;
 
-    public JobRequestDAO() {
-        jobRequestList = new ArrayList<>();
+    public static List<JobRequest> getAllJobRequests() {
+        List<JobRequest> jobRequests = new ArrayList<>();
+        String query = "SELECT client, title, artist, date, time, duration, target_audience, type, category FROM job_requests";
 
-        // Adding initial job requests (for testing; you can allow users to add more via GUI)
-        jobRequestList.add(new JobRequest("Event A", "2025-02-15", "Client A", 100, "Concert"));
-        jobRequestList.add(new JobRequest("Event B", "2025-03-10", "Client B", 150, "Festival"));
+        try (Connection conn = DatabaseInitializer.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                jobRequests.add(new JobRequest(
+                        rs.getString("client"),
+                        rs.getString("title"),
+                        rs.getString("artist"),
+                        rs.getString("date"),
+                        rs.getString("time"),
+                        rs.getInt("duration"),
+                        rs.getInt("target_audience"),
+                        rs.getString("type"),
+                        rs.getString("category")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return jobRequests;
     }
 
-    public List<JobRequest> getAllJobRequests() {
-        return jobRequestList;
-    }
+    public static void addJobRequest(JobRequest jobRequest) {
+        String insertSQL = "INSERT INTO job_requests (client, title, artist, date, time, duration, target_audience, type, category) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    public void addJobRequest(JobRequest jobRequest) {
-        jobRequestList.add(jobRequest);
-        LOGGER.info("Job request added: " + jobRequest);
+        try (Connection conn = DatabaseInitializer.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(insertSQL)) {
+
+            stmt.setString(1, jobRequest.getClient());
+            stmt.setString(2, jobRequest.getTitle());
+            stmt.setString(3, jobRequest.getArtist());
+            stmt.setString(4, jobRequest.getDate());
+            stmt.setString(5, jobRequest.getTime());
+            stmt.setInt(6, jobRequest.getDuration());
+            stmt.setInt(7, jobRequest.getTargetAudience());
+            stmt.setString(8, jobRequest.getType());
+            stmt.setString(9, jobRequest.getCategory());
+
+            stmt.executeUpdate();
+            System.out.println("✅ Job request added successfully!");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

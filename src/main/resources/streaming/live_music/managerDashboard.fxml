@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
@@ -13,5 +12,5 @@
     <Button text="Job Requests" layoutX="200" layoutY="150" prefWidth="200" fx:id="jobRequestsButton" onAction="#handleJobRequests"/>
     <Button text="Add Venue" layoutX="200" layoutY="200" prefWidth="200" fx:id="addVenueButton" onAction="#handleAddVenue"/>
     <Button text="Venue Utilization" layoutX="200" layoutY="250" prefWidth="200" fx:id="venueUtilizationButton" onAction="#handleVenueUtilization"/>
-
+    <Button text="Auto Match" layoutX="200" layoutY="300" prefWidth="200" fx:id="autoMatchButton" onAction="#handleAutoMatch"/>
 </AnchorPane>

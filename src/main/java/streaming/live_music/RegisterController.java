@@ -1,11 +1,7 @@
 package streaming.live_music;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -24,43 +20,38 @@ public class RegisterController {
     @FXML
     private ComboBox<String> roleComboBox;
 
+    private final String userFilePath = System.getProperty("user.dir") + "/src/main/resources/streaming/live_music/users.txt";
+
     @FXML
-    public void initialize() {
+    private void initialize() {
         roleComboBox.getItems().addAll("Manager", "Staff");
-        roleComboBox.setValue("Staff");  // Default selection
     }
 
     @FXML
-    public void handleRegister(ActionEvent event) {
+    private void handleRegister() {
         String username = usernameField.getText().trim();
         String password = passwordField.getText().trim();
         String firstName = firstNameField.getText().trim();
         String lastName = lastNameField.getText().trim();
         String role = roleComboBox.getValue();
 
-        if (username.isEmpty() || password.isEmpty() || firstName.isEmpty() || lastName.isEmpty()) {
-            showAlert("Registration Error", "All fields must be filled.");
+        if (username.isEmpty() || password.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || role == null) {
+            showAlert("Registration Error", "Please fill in all fields.");
             return;
         }
 
-        // Append user details to the file
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("users.txt", true))) {
-            writer.write(username + "," + password + "," + firstName + "," + lastName + "," + role);
-            writer.newLine();
-            showAlert("Success", "User registered successfully as " + role);
-            SceneSwitcher.switchScene(event, "/streaming/live_music/login.fxml");  // Redirect after success
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(userFilePath, true))) {
+            writer.write(username + "," + password + "," + firstName + "," + lastName + "," + role + "\n");
+            showAlert("Success", "Registration successful!");
+            handleBackToLogin();  // Go back to the login screen after successful registration
         } catch (IOException e) {
-            showAlert("Error", "Failed to save user data.");
-            e.printStackTrace();
+            showAlert("Error", "Unable to save user data.");
         }
-
-        clearFields();
     }
 
     @FXML
-    public void handleBackToLogin(ActionEvent event) {
-        // Switch back to login scene
-        SceneSwitcher.switchScene(event, "/streaming/live_music/login.fxml");
+    private void handleBackToLogin() {
+        SceneSwitcher.switchScene("/streaming/live_music/login.fxml");
     }
 
     private void showAlert(String title, String message) {
@@ -69,13 +60,5 @@ public class RegisterController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-    }
-
-    private void clearFields() {
-        usernameField.clear();
-        passwordField.clear();
-        firstNameField.clear();
-        lastNameField.clear();
-        roleComboBox.setValue("Staff");
     }
 }

@@ -1,0 +1,5 @@
+Star,New York,500
+Twinkle,Melbounre,1500
+Opposite,Sydney,500
+Flinder,Flinders street,700
+Metro,Perth,1500

@@ -1,137 +1,82 @@
 package streaming.live_music;
 
-import javafx.event.ActionEvent;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class AutoMatchController {
 
     @FXML
-    private TextArea matchResultsArea;
+    private TableView<MatchedRequest> matchedRequestTable;
+    @FXML
+    private TableColumn<MatchedRequest, String> eventNameColumn;
+    @FXML
+    private TableColumn<MatchedRequest, String> venueNameColumn;
+    @FXML
+    private TableColumn<MatchedRequest, String> statusColumn;
 
-    private static final Logger LOGGER = Logger.getLogger(AutoMatchController.class.getName());
+    private Connection conn = DatabaseInitializer.getConnection();
 
-    /**
-     * Initiates the venue matching process.
-     */
-    public void handleStartMatching() {
-        LOGGER.log(Level.INFO, "Starting venue matching process...");
+    @FXML
+    public void initialize() {
+        eventNameColumn.setCellValueFactory(new PropertyValueFactory<>("eventName"));
+        venueNameColumn.setCellValueFactory(new PropertyValueFactory<>("venueName"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-        StringBuilder results = new StringBuilder();
-        JobRequestDAO jobRequestDAO = new JobRequestDAO();
-        VenueDAO venueDAO = new VenueDAO();
+        ObservableList<MatchedRequest> matchedRequests = FXCollections.observableArrayList(autoMatch());
+        matchedRequestTable.setItems(matchedRequests);
+    }
 
-        List<JobRequest> jobRequests = jobRequestDAO.getAllJobRequests();
-        List<Venue> venues = venueDAO.getAllVenues();
+    private List<MatchedRequest> autoMatch() {
+        List<MatchedRequest> matchedList = new ArrayList<>();
+        try {
+            Statement stmt = conn.createStatement();
 
-        if (jobRequests.isEmpty()) {
-            LOGGER.log(Level.WARNING, "No job requests available to match.");
-            showAlert("No Job Requests", "There are no job requests available to match.");
-            return;
-        }
+            // Get all requests
+            String requestQuery = "SELECT * FROM requests";
+            ResultSet requestSet = stmt.executeQuery(requestQuery);
 
-        if (venues.isEmpty()) {
-            LOGGER.log(Level.WARNING, "No venues available to match.");
-            showAlert("No Venues", "There are no venues available to match.");
-            return;
-        }
+            while (requestSet.next()) {
+                String eventName = requestSet.getString("eventName");
+                int expectedAttendance = requestSet.getInt("expectedAttendance");
+                String eventType = requestSet.getString("eventType");
+                String eventDate = requestSet.getString("eventDate");
 
-        LOGGER.log(Level.INFO, "Matching {0} job requests with {1} venues.", new Object[]{jobRequests.size(), venues.size()});
+                // Find venues matching the request
+                String venueQuery = "SELECT * FROM venues WHERE capacity >= ? AND eventType = ? AND availability = 1";
+                try (PreparedStatement venueStmt = conn.prepareStatement(venueQuery)) {
+                    venueStmt.setInt(1, expectedAttendance);
+                    venueStmt.setString(2, eventType);
 
-        for (JobRequest jobRequest : jobRequests) {
-            List<VenueRecommendation> recommendations = new ArrayList<>();
+                    ResultSet venueSet = venueStmt.executeQuery();
+                    boolean matchFound = false;
 
-            for (Venue venue : venues) {
-                if (isVenueSuitable(venue, jobRequest)) {
-                    int matchScore = calculateMatchScore(venue, jobRequest);
-                    recommendations.add(new VenueRecommendation(
-                            venue.getName(),
-                            matchScore,
-                            venue.getCapacity(),
-                            venue.getLocation(),
-                            venue.getEventType()
-                    ));
-                    LOGGER.log(Level.INFO, "Venue {0} matches with event {1} with a score of {2}%",
-                            new Object[]{venue.getName(), jobRequest.getEventName(), matchScore});
+                    while (venueSet.next()) {
+                        String venueName = venueSet.getString("name");
+                        matchFound = true;
+                        matchedList.add(new MatchedRequest(eventName, venueName, "Matched"));
+                    }
+
+                    if (!matchFound) {
+                        matchedList.add(new MatchedRequest(eventName, "No Match", "No suitable venue found"));
+                    }
                 }
             }
-
-            appendRecommendations(results, jobRequest, recommendations);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
-        if (results.length() == 0) {
-            results.append("No matches found.\n");
-        }
-
-        matchResultsArea.setText(results.toString());
-        LOGGER.log(Level.INFO, "Venue matching process completed.");
-    }
-
-    private boolean isVenueSuitable(Venue venue, JobRequest jobRequest) {
-        boolean locationMatch = venue.getLocation().equalsIgnoreCase(jobRequest.getPreferredLocation());
-        boolean capacityMatch = venue.getCapacity() >= jobRequest.getExpectedAttendees();
-        boolean eventTypeMatch = venue.getEventType().equalsIgnoreCase(jobRequest.getEventName())
-                || venue.getEventType().toLowerCase().contains(jobRequest.getEventName().toLowerCase());
-
-        LOGGER.log(Level.FINE, "Checking venue suitability: {0} (Location: {1}, Capacity: {2}) for Event: {3}",
-                new Object[]{venue.getName(), locationMatch, capacityMatch, jobRequest.getEventName()});
-
-        return locationMatch && capacityMatch && eventTypeMatch;
-    }
-
-    private void appendRecommendations(StringBuilder results, JobRequest jobRequest, List<VenueRecommendation> recommendations) {
-        if (recommendations.isEmpty()) {
-            results.append("No match found for Event: ").append(jobRequest.getEventName()).append("\n\n");
-        } else {
-            results.append("Matches for Event: ").append(jobRequest.getEventName()).append("\n");
-            recommendations.sort((v1, v2) -> Integer.compare(v2.getMatchScore(), v1.getMatchScore()));
-
-            for (VenueRecommendation recommendation : recommendations) {
-                results.append("Venue Name: ").append(recommendation.getVenueName()).append("\n")
-                        .append("Location: ").append(recommendation.getLocation()).append("\n")
-                        .append("Capacity: ").append(recommendation.getCapacity()).append("\n")
-                        .append("Match Score: ").append(recommendation.getMatchScore()).append("%\n")
-                        .append("-------------------------------------------\n");
-            }
-            results.append("\n");
-        }
-    }
-
-    private int calculateMatchScore(Venue venue, JobRequest jobRequest) {
-        int score = 50;
-
-        if (venue.getLocation().equalsIgnoreCase(jobRequest.getPreferredLocation())) {
-            score += 30;
-        }
-
-        if (venue.getCapacity() >= jobRequest.getExpectedAttendees()) {
-            score += 20;
-        } else if (venue.getCapacity() >= jobRequest.getExpectedAttendees() / 2) {
-            score += 10;
-        }
-
-        if (venue.getEventType().toLowerCase().contains(jobRequest.getEventName().toLowerCase())) {
-            score += 10;
-        }
-
-        return Math.min(score, 100);
-    }
-
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+        return matchedList;
     }
 
     @FXML
-    private void handleBack(ActionEvent event) {
-        SceneSwitcher.switchScene(event, "/streaming/live_music/managerDashboard.fxml");
+    private void handleBack() {
+        SceneSwitcher.switchScene("/streaming/live_music/managerDashboard.fxml");
     }
 }

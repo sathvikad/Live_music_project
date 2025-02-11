@@ -7,13 +7,18 @@ import javafx.scene.control.Alert;
 public class StaffDashboardController {
 
     @FXML
-    public void handleViewVenues(ActionEvent event) {
-        SceneSwitcher.switchScene(event, "/streaming/live_music/venueList.fxml");
+    private void handleViewVenues(ActionEvent event) {
+        SceneSwitcher.switchScene("/streaming/live_music/venueList.fxml");
     }
 
     @FXML
-    public void handleLogout(ActionEvent event) {
-        SceneSwitcher.switchScene(event, "/streaming/live_music/login.fxml");
+    private void handleJobRequests(ActionEvent event) {
+        SceneSwitcher.switchScene("/streaming/live_music/jobRequest.fxml");
+    }
+
+    @FXML
+    private void handleLogout(ActionEvent event) {
+        SceneSwitcher.switchScene("/streaming/live_music/login.fxml");
     }
 
     private void showAlert(String title, String message) {

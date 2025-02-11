@@ -1,25 +1,47 @@
 package streaming.live_music;
 
 public class JobRequest {
+    private String clientName;
     private String eventName;
-    private String preferredLocation;
-    private int expectedAttendees;
+    private String eventDate;
+    private int expectedAttendance;
 
-    public JobRequest(String eventName, String preferredLocation, int expectedAttendees) {
+    public JobRequest(String clientName, String eventName, String eventDate, int expectedAttendance) {
+        this.clientName = clientName;
         this.eventName = eventName;
-        this.preferredLocation = preferredLocation;
-        this.expectedAttendees = expectedAttendees;
+        this.eventDate = eventDate;
+        this.expectedAttendance = expectedAttendance;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
 
     public String getEventName() {
         return eventName;
     }
 
-    public String getPreferredLocation() {
-        return preferredLocation;
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
     }
 
-    public int getExpectedAttendees() {
-        return expectedAttendees;
+    public String getEventDate() {
+        return eventDate;
+    }
+
+    public void setEventDate(String eventDate) {
+        this.eventDate = eventDate;
+    }
+
+    public int getExpectedAttendance() {
+        return expectedAttendance;
+    }
+
+    public void setExpectedAttendance(int expectedAttendance) {
+        this.expectedAttendance = expectedAttendance;
     }
 }

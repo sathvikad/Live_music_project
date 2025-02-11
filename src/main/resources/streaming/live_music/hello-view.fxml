@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.*?>
 
 <VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="streaming.live_music.HelloController" alignment="CENTER" spacing="15" style="-fx-padding: 20;">
@@ -11,5 +10,4 @@
     <Button text="Go to Job Requests" onAction="#handleJobRequests" style="-fx-pref-width: 200px;" />
     <Button text="Auto Match" onAction="#handleAutoMatch" style="-fx-pref-width: 200px;" />
     <Button text="Sign Up" onAction="#switchToRegistration" style="-fx-pref-width: 200px;" />
-
 </VBox>

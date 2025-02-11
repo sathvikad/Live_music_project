@@ -1,8 +1,6 @@
 package streaming.live_music;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -11,19 +9,25 @@ import java.io.IOException;
 
 public class SceneSwitcher {
 
-    public static void switchScene(ActionEvent event, String fxmlFile) {
-        try {
-            System.out.println("Switching scene to: " + fxmlFile);
-            FXMLLoader loader = new FXMLLoader(SceneSwitcher.class.getResource(fxmlFile));
-            Parent root = loader.load();
+    private static Stage primaryStage;
 
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
+    public static void setStage(Stage stage) {
+        primaryStage = stage;
+    }
+
+    public static void switchScene(String fxmlPath) {
+        try {
+            if (primaryStage == null) {
+                System.err.println("Error: Primary stage is not set.");
+                return;
+            }
+
+            FXMLLoader loader = new FXMLLoader(SceneSwitcher.class.getResource(fxmlPath));
+            Parent root = loader.load();
+            primaryStage.setScene(new Scene(root));
+            primaryStage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            System.err.println("Failed to load: " + fxmlFile);
         }
     }
 }
-

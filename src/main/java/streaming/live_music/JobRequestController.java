@@ -1,81 +1,50 @@
 package streaming.live_music;
 
-import javafx.event.ActionEvent;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 public class JobRequestController {
 
     @FXML
-    private TextField eventNameField;
-    @FXML
-    private TextField preferredLocationField;
-    @FXML
-    private TextField expectedAttendeesField;
-    @FXML
-    private Label statusLabel;
-
-    private JobRequestDAO jobRequestDAO = new JobRequestDAO();  // DAO for database operations
+    private TableView<JobRequest> jobRequestTable;
 
     @FXML
-    public void handleSubmitRequest() {
-        try {
-            String eventName = eventNameField.getText().trim();
-            String preferredLocation = preferredLocationField.getText().trim();
-            String attendeesText = expectedAttendeesField.getText().trim();
+    private TableColumn<JobRequest, String> eventNameColumn;
 
-            // Validate fields
-            if (eventName.isEmpty() || preferredLocation.isEmpty() || attendeesText.isEmpty()) {
-                showAlert("Input Error", "All fields are required. Please fill out all fields.");
-                return;
-            }
+    @FXML
+    private TableColumn<JobRequest, String> eventDateColumn;
 
-            // Validate attendees
-            int expectedAttendees;
-            try {
-                expectedAttendees = Integer.parseInt(attendeesText);
-                if (expectedAttendees <= 0) {
-                    throw new NumberFormatException();
-                }
-            } catch (NumberFormatException e) {
-                showAlert("Input Error", "Expected attendees must be a positive number.");
-                return;
-            }
+    @FXML
+    private TableColumn<JobRequest, String> clientColumn;
 
-            // Create and add job request to database
-            JobRequest jobRequest = new JobRequest(eventName, preferredLocation, expectedAttendees);
-            boolean success = jobRequestDAO.addJobRequest(jobRequest);
+    @FXML
+    private TableColumn<JobRequest, Integer> expectedAttendanceColumn;
 
-            if (success) {
-                showAlert("Success", "Job request submitted successfully.");
-                clearFields();  // Clear fields after successful submission
-            } else {
-                showAlert("Database Error", "Failed to submit the job request.");
-            }
+    private ObservableList<JobRequest> jobRequests = FXCollections.observableArrayList();
 
-        } catch (Exception e) {
-            showAlert("Error", "An unexpected error occurred: " + e.getMessage());
-        }
+    @FXML
+    public void initialize() {
+        eventNameColumn.setCellValueFactory(new PropertyValueFactory<>("eventName"));
+        eventDateColumn.setCellValueFactory(new PropertyValueFactory<>("eventDate"));
+        clientColumn.setCellValueFactory(new PropertyValueFactory<>("clientName"));
+        expectedAttendanceColumn.setCellValueFactory(new PropertyValueFactory<>("expectedAttendance"));
+
+        loadJobRequests();
+        jobRequestTable.setItems(jobRequests);
+    }
+
+    private void loadJobRequests() {
+        jobRequests.add(new JobRequest("Client A", "Event A", "2025-02-15", 100));
+        jobRequests.add(new JobRequest("Client B", "Event B", "2025-03-10", 150));
+        // If using a database or file, replace this with data loading logic
     }
 
     @FXML
-    public void handleBackToMain(ActionEvent event) {
-        SceneSwitcher.switchScene(event, "/streaming/live_music/managerDashboard.fxml");
-    }
-
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    private void clearFields() {
-        eventNameField.clear();
-        preferredLocationField.clear();
-        expectedAttendeesField.clear();
+    private void handleBackToMainMenu() {
+        SceneSwitcher.switchScene("/streaming/live_music/managerDashboard.fxml");
     }
 }

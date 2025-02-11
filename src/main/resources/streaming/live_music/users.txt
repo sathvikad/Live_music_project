@@ -1,0 +1,11 @@
+
+Sathvika,Sathvika,Sathvika,Danthamala,Manager
+Sathvika,Sathvika,Sathvika,Sathvika,Manager
+Maple,Maple,Maple,Maple,Staff
+Cresent,Cresent,Cresent,Cresent,Staff
+Pinky,Pinky,Pinky,Star,Staff
+Eve,Eve,Eve,Adam,Staff
+Adam,Adam,Adam,Eve,Staff
+Sathvika,Sathvika,Sathvika,Danthamala,StaffMaple,Mpale,Maple,Maple,Manager
+Sathvika,Sathvika,Sathvika,Danthamala,Staff
+Maple,Maple,Maple,Maple,Manager

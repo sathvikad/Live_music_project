@@ -1,24 +1,26 @@
 package streaming.live_music;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
-import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
-import java.util.Scanner;
 
 public class LoginController {
 
     @FXML
     private TextField usernameField;
+
     @FXML
     private PasswordField passwordField;
 
+    private final String userFilePath = System.getProperty("user.dir") + "/src/main/resources/streaming/live_music/users.txt";
+
     @FXML
-    private void handleLogin(ActionEvent event) {
+    private void handleLogin() {
         String username = usernameField.getText().trim();
         String password = passwordField.getText().trim();
 
@@ -27,38 +29,27 @@ public class LoginController {
             return;
         }
 
-        String role = validateCredentials(username, password);
-        if (role != null) {
-            showAlert("Success", "Login successful.");
-            if (role.equals("Manager")) {
-                SceneSwitcher.switchScene(event, "/streaming/live_music/managerDashboard.fxml");
-            } else {
-                SceneSwitcher.switchScene(event, "/streaming/live_music/staffDashboard.fxml");
-            }
+        if (validateCredentials(username, password)) {
+            showAlert("Success", "Login successful!");
+            SceneSwitcher.switchScene("/streaming/live_music/managerDashboard.fxml");
         } else {
             showAlert("Login Error", "Invalid username or password.");
         }
     }
 
-    private String validateCredentials(String username, String password) {
-        try (Scanner scanner = new Scanner(new File("users.txt"))) {
-            while (scanner.hasNextLine()) {
-                String[] userDetails = scanner.nextLine().split(",");
-
-                // Ensure the correct number of columns and validate
+    private boolean validateCredentials(String username, String password) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(userFilePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] userDetails = line.split(",");
                 if (userDetails.length == 5 && userDetails[0].equals(username) && userDetails[1].equals(password)) {
-                    return userDetails[4];  // Return the role (Manager or Staff)
+                    return true;
                 }
             }
         } catch (IOException e) {
-            showAlert("Error", "Unable to read user data.");
+            e.printStackTrace();
         }
-        return null;
-    }
-
-    @FXML
-    private void handleSignUpRedirect(ActionEvent event) {
-        SceneSwitcher.switchScene(event, "/streaming/live_music/register.fxml");
+        return false;
     }
 
     private void showAlert(String title, String message) {
@@ -67,5 +58,10 @@ public class LoginController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    @FXML
+    private void handleSignUpRedirect() {
+        SceneSwitcher.switchScene("/streaming/live_music/register.fxml");
     }
 }

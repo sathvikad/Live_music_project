@@ -2,65 +2,65 @@ package streaming.live_music;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class VenueListController {
 
     @FXML
     private TableView<Venue> venueTable;
+
     @FXML
     private TableColumn<Venue, String> nameColumn;
+
     @FXML
     private TableColumn<Venue, String> locationColumn;
+
     @FXML
     private TableColumn<Venue, Integer> capacityColumn;
+
     @FXML
     private TextField searchField;
 
-    private ObservableList<Venue> venueList;
-
-    private VenueDAO venueDAO = new VenueDAO();
+    private ObservableList<Venue> venueList = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
-        // Bind columns to Venue properties
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
         capacityColumn.setCellValueFactory(new PropertyValueFactory<>("capacity"));
 
-        // Load data from database and display
-        loadVenueData();
+        loadVenues();
+
+        FilteredList<Venue> filteredVenues = new FilteredList<>(venueList, p -> true);
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredVenues.setPredicate(venue -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                String lowerCaseFilter = newValue.toLowerCase();
+                return venue.getName().toLowerCase().contains(lowerCaseFilter);
+            });
+        });
+
+        venueTable.setItems(filteredVenues);
     }
 
-    private void loadVenueData() {
-        List<Venue> venues = venueDAO.getAllVenues();
-        venueList = FXCollections.observableArrayList(venues);
-        venueTable.setItems(venueList);
+    private void loadVenues() {
+        venueList.addAll(new VenueDAO().getAllVenues());
+    }
+
+    public void refreshVenueList() {
+        venueList.clear();
+        venueList.addAll(new VenueDAO().getAllVenues());
     }
 
     @FXML
-    private void handleSearch() {
-        String searchText = searchField.getText().toLowerCase().trim();
-        if (searchText.isEmpty()) {
-            venueTable.setItems(venueList);  // Reset to full list
-        } else {
-            List<Venue> filteredList = venueList.stream()
-                    .filter(venue -> venue.getName().toLowerCase().contains(searchText))
-                    .collect(Collectors.toList());
-            venueTable.setItems(FXCollections.observableArrayList(filteredList));
-        }
-    }
-
-    @FXML
-    private void handleBack(ActionEvent event) {
-        SceneSwitcher.switchScene(event, "/streaming/live_music/managerDashboard.fxml");
+    private void handleBack() {
+        SceneSwitcher.switchScene("/streaming/live_music/managerDashboard.fxml");
     }
 }

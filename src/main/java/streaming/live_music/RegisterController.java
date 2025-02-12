@@ -20,9 +20,6 @@ public class RegisterController {
     private TextField lastNameField;
 
     @FXML
-    private TextField contactField;
-
-    @FXML
     private TextField usernameField;
 
     @FXML
@@ -34,24 +31,22 @@ public class RegisterController {
     private void handleRegister(ActionEvent event) {
         String firstName = firstNameField.getText().trim();
         String lastName = lastNameField.getText().trim();
-        String contact = contactField.getText().trim();
         String username = usernameField.getText().trim();
         String password = passwordField.getText().trim();
 
-        if (firstName.isEmpty() || lastName.isEmpty() || contact.isEmpty() || username.isEmpty() || password.isEmpty()) {
+        if (firstName.isEmpty() || lastName.isEmpty() || username.isEmpty() || password.isEmpty()) {
             showAlert("Error", "Please fill all the fields.");
             return;
         }
 
         try (Connection connection = DriverManager.getConnection(DB_URL);
              PreparedStatement stmt = connection.prepareStatement(
-                     "INSERT INTO users (first_name, last_name, contact, username, password) VALUES (?, ?, ?, ?, ?)")) {
+                     "INSERT INTO users (firstName, lastName, username, password, role) VALUES (?, ?, ?, ?, 'User')")) {
 
             stmt.setString(1, firstName);
             stmt.setString(2, lastName);
-            stmt.setString(3, contact);
-            stmt.setString(4, username);
-            stmt.setString(5, password);
+            stmt.setString(3, username);
+            stmt.setString(4, password);
             stmt.executeUpdate();
 
             showAlert("Success", "Registration successful! You can now log in.");

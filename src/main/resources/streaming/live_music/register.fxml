@@ -10,7 +10,6 @@
 
             <TextField fx:id="firstNameField" promptText="First Name" />
             <TextField fx:id="lastNameField" promptText="Last Name" />
-            <TextField fx:id="contactField" promptText="Contact Number" />
 
             <TextField fx:id="usernameField" promptText="Username" />
             <PasswordField fx:id="passwordField" promptText="Password" />

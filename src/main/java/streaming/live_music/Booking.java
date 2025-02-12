@@ -2,46 +2,25 @@ package streaming.live_music;
 
 public class Booking {
     private int id;
-    private int venueId;
-    private int requestId;
+    private int jobRequestId;
+    private String venueName;
     private String bookingDate;
+    private double totalPrice;
+    private double commission;
 
-    public Booking(int id, int venueId, int requestId, String bookingDate) {
+    public Booking(int id, int jobRequestId, String venueName, String bookingDate, double totalPrice, double commission) {
         this.id = id;
-        this.venueId = venueId;
-        this.requestId = requestId;
+        this.jobRequestId = jobRequestId;
+        this.venueName = venueName;
         this.bookingDate = bookingDate;
+        this.totalPrice = totalPrice;
+        this.commission = commission;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public int getVenueId() {
-        return venueId;
-    }
-
-    public int getRequestId() {
-        return requestId;
-    }
-
-    public String getBookingDate() {
-        return bookingDate;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setVenueId(int venueId) {
-        this.venueId = venueId;
-    }
-
-    public void setRequestId(int requestId) {
-        this.requestId = requestId;
-    }
-
-    public void setBookingDate(String bookingDate) {
-        this.bookingDate = bookingDate;
-    }
+    public int getId() { return id; }
+    public int getJobRequestId() { return jobRequestId; }
+    public String getVenueName() { return venueName; }
+    public String getBookingDate() { return bookingDate; }
+    public double getTotalPrice() { return totalPrice; }
+    public double getCommission() { return commission; }
 }

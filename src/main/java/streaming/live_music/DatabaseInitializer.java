@@ -21,9 +21,10 @@ public class DatabaseInitializer {
     public static void initializeDatabase() {
         try (Connection conn = getConnection(); Statement stmt = conn.createStatement()) {
             if (conn != null) {
-                // Drop existing tables to remove duplicates
+                // Drop existing tables to avoid duplication
                 stmt.execute("DROP TABLE IF EXISTS venues");
                 stmt.execute("DROP TABLE IF EXISTS job_requests");
+                stmt.execute("DROP TABLE IF EXISTS bookings");
 
                 // Create venues table
                 String createVenuesTable = "CREATE TABLE IF NOT EXISTS venues ("
@@ -34,7 +35,7 @@ public class DatabaseInitializer {
                         + "booking_price REAL)";
                 stmt.execute(createVenuesTable);
 
-                // Create job requests table with correct schema
+                // Create job requests table
                 String createJobRequestsTable = "CREATE TABLE IF NOT EXISTS job_requests ("
                         + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                         + "client TEXT, "
@@ -48,7 +49,19 @@ public class DatabaseInitializer {
                         + "category TEXT)";
                 stmt.execute(createJobRequestsTable);
 
-                System.out.println("Database initialized successfully (Duplicates removed).");
+                // Create bookings table
+                String createBookingsTable = "CREATE TABLE IF NOT EXISTS bookings ("
+                        + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                        + "job_request_id INTEGER, "
+                        + "venue_name TEXT, "
+                        + "booking_date TEXT, "
+                        + "total_price REAL, "
+                        + "commission REAL, "
+                        + "FOREIGN KEY (job_request_id) REFERENCES job_requests(id), "
+                        + "FOREIGN KEY (venue_name) REFERENCES venues(name))";
+                stmt.execute(createBookingsTable);
+
+                System.out.println("Database initialized successfully.");
             }
         } catch (SQLException e) {
             e.printStackTrace();

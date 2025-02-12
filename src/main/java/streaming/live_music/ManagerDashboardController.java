@@ -1,9 +1,12 @@
 package streaming.live_music;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 
 public class ManagerDashboardController {
+
+    @FXML private Button autoMatchButton;
 
     @FXML
     private void handleViewVenues(ActionEvent event) {
@@ -16,17 +19,22 @@ public class ManagerDashboardController {
     }
 
     @FXML
-    private void handleAddVenue(ActionEvent event) {
-        SceneSwitcher.switchScene((javafx.scene.Node) event.getSource(), "AddVenue.fxml");
-    }
-
-    @FXML
-    private void handleVenueUtilization(ActionEvent event) {
-        SceneSwitcher.switchScene((javafx.scene.Node) event.getSource(), "VenueUtilization.fxml");
-    }
-
-    @FXML
-    private void handleAutoMatch(ActionEvent event) {
+    private void handleAutoMatch(ActionEvent event) { // NEW FUNCTION
         SceneSwitcher.switchScene((javafx.scene.Node) event.getSource(), "AutoMatch.fxml");
+    }
+
+    @FXML
+    private void handleViewBookings(ActionEvent event) {
+        SceneSwitcher.switchScene((javafx.scene.Node) event.getSource(), "Booking.fxml");
+    }
+
+    @FXML
+    private void handleViewPieChart(ActionEvent event) {
+        SceneSwitcher.switchScene((javafx.scene.Node) event.getSource(), "PieChart.fxml");
+    }
+
+    @FXML
+    private void handleLogout(ActionEvent event) {
+        SceneSwitcher.switchScene((javafx.scene.Node) event.getSource(), "Login.fxml");
     }
 }

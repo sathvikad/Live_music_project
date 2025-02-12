@@ -11,7 +11,7 @@ public class AutoMatchService {
         StringBuilder matchResults = new StringBuilder();
 
         for (JobRequest jobRequest : jobRequests) {
-            int requiredCapacity = jobRequest.getTargetAudience(); // FIXED: Uses getTargetAudience()
+            int requiredCapacity = jobRequest.getTargetAudience();
             String eventType = jobRequest.getType();
             Venue bestMatch = null;
 

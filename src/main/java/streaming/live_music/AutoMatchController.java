@@ -6,14 +6,12 @@ import javafx.scene.control.Label;
 
 public class AutoMatchController {
 
-    @FXML
-    private Button matchButton;
-    @FXML
-    private Label resultLabel;
+    @FXML private Button matchButton;
+    @FXML private Label resultLabel;
 
     @FXML
     private void handleAutoMatch() {
-        String result = AutoMatchService.autoMatch(); // FIXED: Calls correct method
+        String result = AutoMatchService.autoMatch();
         resultLabel.setText(result);
     }
 

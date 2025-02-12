@@ -9,9 +9,9 @@ import java.io.IOException;
 
 public class SceneSwitcher {
 
-    public static void switchScene(Node node, String fxmlPath) {
+    public static void switchScene(Node node, String fxmlFile) {
         try {
-            FXMLLoader loader = new FXMLLoader(SceneSwitcher.class.getResource(fxmlPath));
+            FXMLLoader loader = new FXMLLoader(SceneSwitcher.class.getResource("/streaming/live_music/" + fxmlFile));
             Scene scene = new Scene(loader.load());
             Stage stage = (Stage) node.getScene().getWindow();
             stage.setScene(scene);

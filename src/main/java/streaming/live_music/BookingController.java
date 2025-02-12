@@ -1,42 +1,70 @@
 package streaming.live_music;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.event.ActionEvent;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class BookingController {
 
-    @FXML private TextField jobRequestIdField;
-    @FXML private TextField venueNameField;
-    @FXML private DatePicker bookingDatePicker;
-    @FXML private Label statusLabel;
+    @FXML
+    private TextField jobRequestIdField;
+    @FXML
+    private TextField venueNameField;
+    @FXML
+    private DatePicker bookingDateField;
+    @FXML
+    private Label bookingStatusLabel;
+    @FXML
+    private Button bookVenueButton;
+    @FXML
+    private Button backButton;
 
     @FXML
-    private void handleBookVenue(ActionEvent event) {
+    public void handleBookVenue() {
         try {
-            int jobRequestId = Integer.parseInt(jobRequestIdField.getText());
-            String venueName = venueNameField.getText();
-            String bookingDate = bookingDatePicker.getValue().toString();
+            String jobRequestId = jobRequestIdField.getText().trim();
+            String venueName = venueNameField.getText().trim();
+            LocalDate bookingDate = bookingDateField.getValue();
 
-            if (!BookingDAO.isVenueAvailable(venueName, bookingDate)) {
-                statusLabel.setText("Venue is already booked!");
+            if (jobRequestId.isEmpty() || venueName.isEmpty() || bookingDate == null) {
+                bookingStatusLabel.setText("Please fill all fields.");
                 return;
             }
 
-            double totalPrice = 5000.0; // Dummy value, can be calculated
-            double commission = totalPrice * 0.10; // 10% brokerage fee
+            // Insert booking into the database
+            String insertSQL = "INSERT INTO bookings (job_request_id, venue_name, booking_date) VALUES (?, ?, ?)";
+            try (Connection conn = DatabaseInitializer.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(insertSQL)) {
 
-            BookingDAO.bookVenue(jobRequestId, venueName, bookingDate, totalPrice, commission);
-            statusLabel.setText("Venue booked successfully!");
+                stmt.setInt(1, Integer.parseInt(jobRequestId));
+                stmt.setString(2, venueName);
+                stmt.setString(3, bookingDate.toString());
 
-        } catch (Exception e) {
-            statusLabel.setText("Invalid input!");
+                int rowsAffected = stmt.executeUpdate();
+                if (rowsAffected > 0) {
+                    bookingStatusLabel.setText("Booking Successful!");
+                } else {
+                    bookingStatusLabel.setText("Booking Failed!");
+                }
+            }
+        } catch (SQLException e) {
+            bookingStatusLabel.setText("Error booking venue!");
             e.printStackTrace();
         }
     }
 
     @FXML
-    private void handleBackToDashboard(ActionEvent event) {
-        SceneSwitcher.switchScene((javafx.scene.Node) event.getSource(), "ManagerDashboard.fxml");
+    private void handleBackToDashboard() {
+        if (backButton == null) {
+            System.out.println("Error: Back button is null in BookingController!");
+            return;
+        }
+        SceneSwitcher.switchScene(backButton, "ManagerDashboard.fxml");
     }
 }

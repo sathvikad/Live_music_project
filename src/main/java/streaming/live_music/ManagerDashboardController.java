@@ -1,40 +1,43 @@
 package streaming.live_music;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
+import javafx.scene.Node;
 
 public class ManagerDashboardController {
 
-    @FXML private Button autoMatchButton;
-
     @FXML
     private void handleViewVenues(ActionEvent event) {
-        SceneSwitcher.switchScene((javafx.scene.Node) event.getSource(), "VenueList.fxml");
+        SceneSwitcher.switchScene((Node) event.getSource(), "VenueList.fxml");
+    }
+
+    @FXML
+    private void handleAddJobRequest(ActionEvent event) { // NEW FUNCTION
+        SceneSwitcher.switchScene((Node) event.getSource(), "AddJob.fxml");
     }
 
     @FXML
     private void handleJobRequests(ActionEvent event) {
-        SceneSwitcher.switchScene((javafx.scene.Node) event.getSource(), "JobRequest.fxml");
+        SceneSwitcher.switchScene((Node) event.getSource(), "JobRequest.fxml");
     }
 
     @FXML
-    private void handleAutoMatch(ActionEvent event) { // NEW FUNCTION
-        SceneSwitcher.switchScene((javafx.scene.Node) event.getSource(), "AutoMatch.fxml");
+    private void handleAutoMatch(ActionEvent event) {
+        SceneSwitcher.switchScene((Node) event.getSource(), "AutoMatch.fxml");
     }
 
     @FXML
     private void handleViewBookings(ActionEvent event) {
-        SceneSwitcher.switchScene((javafx.scene.Node) event.getSource(), "Booking.fxml");
+        SceneSwitcher.switchScene((Node) event.getSource(), "Booking.fxml");
     }
 
     @FXML
     private void handleViewPieChart(ActionEvent event) {
-        SceneSwitcher.switchScene((javafx.scene.Node) event.getSource(), "PieChart.fxml");
+        SceneSwitcher.switchScene((Node) event.getSource(), "PieChart.fxml");
     }
 
     @FXML
     private void handleLogout(ActionEvent event) {
-        SceneSwitcher.switchScene((javafx.scene.Node) event.getSource(), "Login.fxml");
+        SceneSwitcher.switchScene((Node) event.getSource(), "Login.fxml");
     }
 }

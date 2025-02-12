@@ -1,37 +1,12 @@
 package streaming.live_music;
 
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.ArrayList;
 
 public class JobRequestDAO {
-
-    public static List<JobRequest> getAllJobRequests() {
-        List<JobRequest> jobRequests = new ArrayList<>();
-        String query = "SELECT client, title, artist, date, time, duration, target_audience, type, category FROM job_requests";
-
-        try (Connection conn = DatabaseInitializer.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                jobRequests.add(new JobRequest(
-                        rs.getString("client"),
-                        rs.getString("title"),
-                        rs.getString("artist"),
-                        rs.getString("date"),
-                        rs.getString("time"),
-                        rs.getInt("duration"),
-                        rs.getInt("target_audience"),
-                        rs.getString("type"),
-                        rs.getString("category")
-                ));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return jobRequests;
-    }
 
     public static void addJobRequest(JobRequest jobRequest) {
         String insertSQL = "INSERT INTO job_requests (client, title, artist, date, time, duration, target_audience, type, category) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -55,5 +30,33 @@ public class JobRequestDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static List<JobRequest> getAllJobRequests() {
+        List<JobRequest> jobRequests = new ArrayList<>();
+        String selectSQL = "SELECT * FROM job_requests";
+
+        try (Connection conn = DatabaseInitializer.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(selectSQL)) {
+
+            var resultSet = stmt.executeQuery();
+            while (resultSet.next()) {
+                jobRequests.add(new JobRequest(
+                        resultSet.getString("client"),
+                        resultSet.getString("title"),
+                        resultSet.getString("artist"),
+                        resultSet.getString("date"),
+                        resultSet.getString("time"),
+                        resultSet.getInt("duration"),
+                        resultSet.getInt("target_audience"),
+                        resultSet.getString("type"),
+                        resultSet.getString("category")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return jobRequests;
     }
 }

@@ -17,14 +17,20 @@ public class AutoMatchService {
 
             for (Venue venue : venues) {
                 if (venue.getCapacity() >= requiredCapacity && venue.getSuitableFor().contains(eventType)) {
-                    bestMatch = venue;
-                    break;
+                    // Check if venue is already booked
+                    if (!BookingDAO.isVenueBooked(venue.getName(), jobRequest.getDate())) {
+                        bestMatch = venue;
+                        break;
+                    }
                 }
             }
 
             if (bestMatch != null) {
                 matchResults.append("Matched Event: ").append(jobRequest.getTitle())
                         .append(" with Venue: ").append(bestMatch.getName()).append("\n");
+
+                // Save the booking automatically
+                BookingDAO.bookVenue(jobRequest.getId(), bestMatch.getName(), jobRequest.getDate());
             } else {
                 matchResults.append("No suitable venue found for Event: ").append(jobRequest.getTitle()).append("\n");
             }

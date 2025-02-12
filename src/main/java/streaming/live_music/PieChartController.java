@@ -1,41 +1,58 @@
 package streaming.live_music;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.PieChart;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.SQLException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class PieChartController {
 
-    @FXML private PieChart venuePieChart;
+    @FXML
+    private PieChart venueUtilizationChart;
+
+    @FXML
+    private Button backButton;
 
     @FXML
     public void initialize() {
-        ObservableList<PieChart.Data> chartData = FXCollections.observableArrayList();
+        System.out.println("Initializing Pie Chart...");
+        loadChartData();
+    }
+
+    private void loadChartData() {
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+
+        String sql = "SELECT venue_name, COUNT(*) AS usage_count FROM bookings GROUP BY venue_name";
 
         try (Connection conn = DatabaseInitializer.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT venue_name, COUNT(*) as count FROM bookings GROUP BY venue_name")) {
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 String venueName = rs.getString("venue_name");
-                int count = rs.getInt("count");
-                chartData.add(new PieChart.Data(venueName, count));
+                int usageCount = rs.getInt("usage_count");
+
+                // Add data to the chart
+                pieChartData.add(new PieChart.Data(venueName, usageCount));
             }
 
-        } catch (Exception e) {
+            // Update Pie Chart
+            venueUtilizationChart.setData(pieChartData);
+
+        } catch (SQLException e) {
+            System.out.println("Error loading pie chart data: " + e.getMessage());
             e.printStackTrace();
         }
-
-        venuePieChart.setData(chartData);
     }
 
     @FXML
     private void handleBackToDashboard() {
-        SceneSwitcher.switchScene(venuePieChart, "ManagerDashboard.fxml");
+        SceneSwitcher.switchScene(backButton, "ManagerDashboard.fxml");
     }
 }

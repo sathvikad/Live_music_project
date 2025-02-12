@@ -8,8 +8,9 @@
     <Label text="Manager Dashboard" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
 
     <Button text="View Venues" onAction="#handleViewVenues"/>
+    <Button text="Add New Job Request" onAction="#handleAddJobRequest"/> <!-- NEW BUTTON -->
     <Button text="View Job Requests" onAction="#handleJobRequests"/>
-    <Button text="Auto Match Venues" onAction="#handleAutoMatch"/> <!-- NEW BUTTON -->
+    <Button text="Auto Match Venues" onAction="#handleAutoMatch"/>
     <Button text="View Bookings" onAction="#handleViewBookings"/>
     <Button text="View Pie Chart" onAction="#handleViewPieChart"/>
     <Button text="Logout" onAction="#handleLogout"/>

@@ -6,9 +6,11 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class LoginController {
 
@@ -17,6 +19,8 @@ public class LoginController {
 
     @FXML
     private PasswordField passwordField;
+
+    private static final String DB_URL = "jdbc:sqlite:lmvm_database.db"; // Updated DB name
 
     @FXML
     private void handleLogin(ActionEvent event) {
@@ -28,28 +32,38 @@ public class LoginController {
             return;
         }
 
-        if (validateCredentials(username, password)) {
+        String role = validateCredentials(username, password);
+        if (role != null) {
             showAlert("Success", "Login successful!");
-            SceneSwitcher.switchScene((Node) event.getSource(), "ManagerDashboard.fxml");
+
+            if (role.equals("Manager")) {
+                SceneSwitcher.switchScene((Node) event.getSource(), "ManagerDashboard.fxml");
+            } else {
+                SceneSwitcher.switchScene((Node) event.getSource(), "StaffDashboard.fxml");
+            }
         } else {
             showAlert("Login Error", "Invalid username or password.");
         }
     }
 
-    private boolean validateCredentials(String username, String password) {
-        try (BufferedReader br = new BufferedReader(new FileReader("users.txt"))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] userDetails = line.split(",");
-                if (userDetails.length == 2 && userDetails[0].trim().equals(username) && userDetails[1].trim().equals(password)) {
-                    return true;
-                }
+    private String validateCredentials(String username, String password) {
+        String query = "SELECT role FROM Users WHERE username = ? AND password = ?"; // Use 'Users'
+
+        try (Connection connection = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("role"); // Return role if credentials are valid
             }
-        } catch (IOException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-            showAlert("File Error", "Could not read user database.");
+            showAlert("Database Error", "Could not connect to the database.");
         }
-        return false;
+        return null;
     }
 
     private void showAlert(String title, String message) {

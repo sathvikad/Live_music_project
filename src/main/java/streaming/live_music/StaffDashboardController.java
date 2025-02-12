@@ -1,32 +1,20 @@
 package streaming.live_music;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.event.ActionEvent;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 
 public class StaffDashboardController {
 
     @FXML
-    private void handleViewVenues(ActionEvent event) {
-        SceneSwitcher.switchScene((Node) event.getSource(), "venueList.fxml");
-    }
-
-    @FXML
-    private void handleJobRequests(ActionEvent event) {
-        SceneSwitcher.switchScene((Node) event.getSource(), "jobRequest.fxml");
+    private void handleViewAssignedJobs(ActionEvent event) {
+        System.out.println("Navigating to Assigned Jobs...");
+        SceneSwitcher.switchScene((Node) event.getSource(), "AssignedJobs.fxml"); // Ensure AssignedJobs.fxml exists
     }
 
     @FXML
     private void handleLogout(ActionEvent event) {
-        SceneSwitcher.switchScene((Node) event.getSource(), "login.fxml");
-    }
-
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+        System.out.println("Logging out...");
+        SceneSwitcher.switchScene((Node) event.getSource(), "Login.fxml");
     }
 }

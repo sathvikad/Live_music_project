@@ -5,8 +5,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.event.ActionEvent;
+import javafx.scene.Node;
 
 public class VenueListController {
 
@@ -22,11 +24,13 @@ public class VenueListController {
     private TableColumn<Venue, String> categoryColumn;
     @FXML
     private TableColumn<Venue, Double> bookingPriceColumn;
+    @FXML
+    private TextField searchField;
+
+    private ObservableList<Venue> venueList = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
-        System.out.println("Initializing VenueListController...");
-
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         capacityColumn.setCellValueFactory(new PropertyValueFactory<>("capacity"));
         suitableForColumn.setCellValueFactory(new PropertyValueFactory<>("suitableFor"));
@@ -37,19 +41,30 @@ public class VenueListController {
     }
 
     private void refreshVenueTable() {
-        System.out.println("Refreshing Venue Table...");
-        ObservableList<Venue> venues = FXCollections.observableArrayList(VenueDAO.getAllVenues());
-        venueTable.setItems(venues);
+        venueList.setAll(VenueDAO.getAllVenues());
+        venueTable.setItems(venueList);
+    }
 
-        if (venueTable.getItems().isEmpty()) {
-            System.out.println("No venues available.");
+    @FXML
+    private void handleSearch() {
+        String query = searchField.getText().trim().toLowerCase();
+        if (query.isEmpty()) {
+            venueTable.setItems(venueList);
         } else {
-            System.out.println("Venues loaded successfully.");
+            ObservableList<Venue> filteredList = FXCollections.observableArrayList();
+            for (Venue venue : venueList) {
+                if (venue.getName().toLowerCase().contains(query) ||
+                        venue.getCategory().toLowerCase().contains(query) ||
+                        venue.getSuitableFor().toLowerCase().contains(query)) {
+                    filteredList.add(venue);
+                }
+            }
+            venueTable.setItems(filteredList);
         }
     }
 
     @FXML
     private void handleBackToDashboard(ActionEvent event) {
-        SceneSwitcher.switchScene((javafx.scene.Node) event.getSource(), "ManagerDashboard.fxml");
+        SceneSwitcher.switchScene((Node) event.getSource(), "ManagerDashboard.fxml");
     }
 }

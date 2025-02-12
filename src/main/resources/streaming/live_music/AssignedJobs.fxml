@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="streaming.live_music.AssignedJobsController" style="-fx-padding: 20;">
+
+    <Label text="Assigned Jobs" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+    <TableView fx:id="assignedJobsTable">
+        <columns>
+            <TableColumn fx:id="jobIdColumn" text="Job ID"/>
+            <TableColumn fx:id="eventTitleColumn" text="Event Title"/>
+            <TableColumn fx:id="clientColumn" text="Client"/>
+            <TableColumn fx:id="dateColumn" text="Date"/>
+            <TableColumn fx:id="timeColumn" text="Time"/>
+            <TableColumn fx:id="statusColumn" text="Status"/>
+        </columns>
+    </TableView>
+
+    <Button text="Back" onAction="#handleBack"/>
+</VBox>

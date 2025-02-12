@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
+<VBox spacing="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="streaming.live_music.VenueListController" style="-fx-padding: 20;">
 
-<AnchorPane prefWidth="800" prefHeight="500" xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="streaming.live_music.VenueListController">
+    <TextField fx:id="searchField" promptText="Search Venues..." onKeyReleased="#handleSearch"/>
 
-    <TableView fx:id="venueTable" layoutX="50" layoutY="50" prefWidth="700" prefHeight="350">
+    <TableView fx:id="venueTable">
         <columns>
-            <TableColumn text="Venue Name" fx:id="nameColumn" prefWidth="200"/>
-            <TableColumn text="Capacity" fx:id="capacityColumn" prefWidth="100"/>
-            <TableColumn text="Suitable For" fx:id="suitableForColumn" prefWidth="150"/>
-            <TableColumn text="Category" fx:id="categoryColumn" prefWidth="150"/>
-            <TableColumn text="Booking Price" fx:id="bookingPriceColumn" prefWidth="120"/>
+            <TableColumn fx:id="nameColumn" text="Venue Name"/>
+            <TableColumn fx:id="capacityColumn" text="Capacity"/>
+            <TableColumn fx:id="suitableForColumn" text="Suitable For"/>
+            <TableColumn fx:id="categoryColumn" text="Category"/>
+            <TableColumn fx:id="bookingPriceColumn" text="Booking Price"/>
         </columns>
     </TableView>
 
-    <Button text="Back to Dashboard" layoutX="50" layoutY="420" fx:id="backButton" onAction="#handleBackToDashboard"/>
-</AnchorPane>
+    <Button fx:id="backButton" text="Back to Dashboard" onAction="#handleBackToDashboard"/>
+
+</VBox>

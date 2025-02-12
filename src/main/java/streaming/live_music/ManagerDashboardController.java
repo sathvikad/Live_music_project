@@ -12,7 +12,7 @@ public class ManagerDashboardController {
     }
 
     @FXML
-    private void handleAddJobRequest(ActionEvent event) { // NEW FUNCTION
+    private void handleAddJobRequest(ActionEvent event) {
         SceneSwitcher.switchScene((Node) event.getSource(), "AddJob.fxml");
     }
 
@@ -28,12 +28,12 @@ public class ManagerDashboardController {
 
     @FXML
     private void handleViewBookings(ActionEvent event) {
-        SceneSwitcher.switchScene((Node) event.getSource(), "Booking.fxml");
+        SceneSwitcher.switchScene((Node) event.getSource(), "Booking.fxml");  // Ensure Booking.fxml exists
     }
 
     @FXML
     private void handleViewPieChart(ActionEvent event) {
-        SceneSwitcher.switchScene((Node) event.getSource(), "PieChart.fxml");
+        SceneSwitcher.switchScene((Node) event.getSource(), "PieChart.fxml");  // Ensure PieChart.fxml exists
     }
 
     @FXML

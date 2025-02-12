@@ -1,6 +1,7 @@
 package streaming.live_music;
 
 public class JobRequest {
+    private int id;  // Added missing ID field
     private String client;
     private String title;
     private String artist;
@@ -11,7 +12,12 @@ public class JobRequest {
     private String type;
     private String category;
 
-    public JobRequest(String client, String title, String artist, String date, String time, int duration, int targetAudience, String type, String category) {
+    /**
+     * Constructor for new Job Requests (without ID).
+     * Used when adding a new job request before it's assigned an ID in the database.
+     */
+    public JobRequest(String client, String title, String artist, String date, String time,
+                      int duration, int targetAudience, String type, String category) {
         this.client = client;
         this.title = title;
         this.artist = artist;
@@ -23,76 +29,82 @@ public class JobRequest {
         this.category = category;
     }
 
-    // Getters and Setters
-    public String getClient() {
-        return client;
+    /**
+     * Constructor for fetching existing Job Requests (with ID).
+     * Used when retrieving job requests from the database.
+     */
+    public JobRequest(int id, String client, String title, String artist, String date, String time,
+                      int duration, int targetAudience, String type, String category) {
+        this.id = id;
+        this.client = client;
+        this.title = title;
+        this.artist = artist;
+        this.date = date;
+        this.time = time;
+        this.duration = duration;
+        this.targetAudience = targetAudience;
+        this.type = type;
+        this.category = category;
     }
 
-    public void setClient(String client) {
-        this.client = client;
+
+    public int getId() {
+        return id;
+    }
+
+    public String getClient() {
+        return client;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getArtist() {
         return artist;
-    }
-
-    public void setArtist(String artist) {
-        this.artist = artist;
     }
 
     public String getDate() {
         return date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     public String getTime() {
         return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
     }
 
     public int getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
     public int getTargetAudience() {
         return targetAudience;
-    }
-
-    public void setTargetAudience(int targetAudience) {
-        this.targetAudience = targetAudience;
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public String getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "JobRequest{" +
+                "id=" + id +
+                ", client='" + client + '\'' +
+                ", title='" + title + '\'' +
+                ", artist='" + artist + '\'' +
+                ", date='" + date + '\'' +
+                ", time='" + time + '\'' +
+                ", duration=" + duration +
+                ", targetAudience=" + targetAudience +
+                ", type='" + type + '\'' +
+                ", category='" + category + '\'' +
+                '}';
     }
 }

@@ -52,10 +52,10 @@ public class CSVImporter {
                     System.err.println("Skipping invalid venue row (data format error): " + line);
                 }
             }
-            System.out.println("✅ Venues imported successfully! New entries added: " + count);
+            System.out.println("Venues imported successfully! New entries added: " + count);
 
         } catch (IOException | SQLException e) {
-            System.err.println("❌ Error importing venues!");
+            System.err.println("Error importing venues!");
             e.printStackTrace();
         }
     }
@@ -110,10 +110,10 @@ public class CSVImporter {
                     System.err.println("Skipping invalid job request row (data format error): " + line);
                 }
             }
-            System.out.println("✅ Job requests imported successfully! New entries added: " + count);
+            System.out.println("Job requests imported successfully! New entries added: " + count);
 
         } catch (IOException | SQLException e) {
-            System.err.println("❌ Error importing job requests!");
+            System.err.println("Error importing job requests!");
             e.printStackTrace();
         }
     }

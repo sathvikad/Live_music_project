@@ -55,4 +55,26 @@ public class VenueDAO {
         }
         return venues;
     }
+
+    // FIX: Add getVenuesBySearch method
+    public static List<String> getVenuesBySearch(String searchQuery) {
+        List<String> venues = new ArrayList<>();
+        String query = "SELECT name FROM venues WHERE name LIKE ?";
+
+        try (Connection conn = DatabaseInitializer.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, "%" + searchQuery + "%"); // Search query with wildcards
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                venues.add(rs.getString("name"));
+            }
+
+            System.out.println("Venues fetched for search query: " + searchQuery);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return venues;
+    }
 }

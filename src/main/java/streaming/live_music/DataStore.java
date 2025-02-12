@@ -26,4 +26,18 @@ public class DataStore {
         users.put(username, new User(username, password, firstName, lastName, isManager));
         return true;
     }
+
+    // New method to update user details
+    public static boolean updateUser(String username, String newPassword, String newFirstName, String newLastName, String newRole) {
+        if (!users.containsKey(username)) {
+            return false; // User not found
+        }
+
+        boolean isManager = newRole.equalsIgnoreCase("Manager");
+
+        // Update the user details
+        User updatedUser = new User(username, newPassword, newFirstName, newLastName, isManager);
+        users.put(username, updatedUser);
+        return true;
+    }
 }

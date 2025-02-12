@@ -34,4 +34,14 @@ public class User {
     public String getLastName() {
         return lastName;
     }
+
+    // New method to return the role as a string
+    public String getRole() {
+        return isManager ? "Manager" : "User";
+    }
+
+    // Added getId method (assuming username is unique)
+    public String getId() {
+        return username;
+    }
 }
